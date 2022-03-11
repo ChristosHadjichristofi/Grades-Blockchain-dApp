@@ -8,6 +8,7 @@ exports.postStoreForm = (req, res, next) => {
     let gradeInfo = {};
 
     const school = req.body.school;
+    const year = req.body.year;
     const period = req.body.period;
     const course = req.body.course;
     const examDate = req.body.exam_date;
@@ -20,6 +21,7 @@ exports.postStoreForm = (req, res, next) => {
 
     gradeInfo = {
         school: school,
+        year: year,
         period: period,
         course: course,
         examDate: examDate,
