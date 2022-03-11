@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
+    <title> <%= pageTitle %> </title>
+    <link rel="stylesheet" href="assets/bootstrap/css/bootstrap.min.css">
+    <link rel="stylesheet" href="assets/css/styles.css">
+</head>
+
+<body>
+    
+    <%- include("includes/navbar.ejs")%>
+    
+    <div class="container" id="container-form">
+        <div class="card">
+            <div class="card-body">
+                <h6 class="text-muted card-subtitle mb-2">Complete the following form</h6>
+                <form method="POST" action="api/store/form">
+                    <label for="school">School</label>
+                    <input class="form-control" list="schools" name="school" id="school"/>
+                    <datalist id="schools">
+                        <option value="SCHOOL OF CIVIL ENGINEERING"></option>
+                        <option value="SCHOOL OF MECHANICAL ENGINEERING"></option>
+                        <option value="SCHOOL OF ELECTRICAL & COMPUTER ENGINEERING"></option>
+                        <option value="SCHOOL OF ARCHITECTURE"></option>
+                        <option value="SCHOOL OF CHEMICAL ENGINEERING"></option>
+                        <option value="SCHOOL OF RURAL, SURVEYING AND GEOINFORMATICS ENGINEERING"></option>
+                        <option value="SCHOOL OF MINING & METALLURGICAL ENGINEERING"></option>
+                        <option value="SCHOOL OF NAVAL ARCHITECTURE & MARINE ENGINEERING"></option>
+                        <option value="SCHOOL OF APPLIED MATHEMATICAL & PHYSICAL SCIENCES"></option>
+                    </datalist>
+                    
+                    <label for="period">Period</label>
+                    <input class="form-control" name="period" id="period"/>
+
+                    <label for="course">Course</label>
+                    <input class="form-control" list="courses" name="course" id="course"/>
+                    <datalist id="courses">
+                        <option value="SCHOOL OF CIVIL ENGINEERING"></option>
+                    </datalist>
+
+                    <label for="professor">Professor</label>
+                    <input class="form-control" name="professor" id="professor"/>
+
+                    <label for="exam-date">Exam Date</label>
+                    <input class="form-control" type="datetime-local" name="exam_date" id="exam-date"/>
+
+                    <label for="participants-no">Number of Participants</label>
+                    <input class="form-control" type="number" name="participants_no" id="participants-no"/>
+
+                    <label for="pass-no">Number of Participants Passed</label>
+                    <input class="form-control" type="number" name="pass_no" id="pass-no"/>
+
+                    <label for="grades-asset-url">Grades Asset</label>
+                    <input class="form-control" type="url" name="grades_asset_url" id="grades-asset-url"/>
+
+                    <label for="update-status">Update Status</label>
+                    <input class="form-control" list="update-status-list" name="update_status" id="update-status"/>
+                    <datalist id="update-status-list">
+                        <option value="INITIAL STATE"></option>
+                        <option value="CORRECTIVE STATE"></option>
+                    </datalist>
+
+                    <label for="notes">Notes</label>
+                    <textarea class="form-control" name="notes" id="notes"></textarea>
+
+                    <label for="drop-file">Grades File (.bau)</label>
+                    <section class="droparea">
+                        <i class="fa fa-file" aria-hidden="true"></i>
+                        <p>Drop your .bau file here</p>
+                    </section>
+
+                    <div id="btn-container">
+                        <button class="btn btn-primary" id="storeGrades" type="submit">Save</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>
