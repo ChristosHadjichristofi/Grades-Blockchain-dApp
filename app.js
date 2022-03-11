@@ -1,5 +1,6 @@
 const express = require('express');
 const path = require('path');
+const fileUpload = require('express-fileupload');
 const { web3Object } = require('./utils/web3');
 require('dotenv').config();
 
@@ -16,6 +17,9 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 app.use(express.static(path.join(__dirname, 'public')));
+
+app.use(fileUpload());
+
 app.set('view engine', 'ejs');
 app.set('views', 'views');
 

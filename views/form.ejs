@@ -17,7 +17,7 @@
         <div class="card">
             <div class="card-body">
                 <h6 class="text-muted card-subtitle mb-2">Complete the following form</h6>
-                <form method="POST" action="api/store/form">
+                <form method="POST" action="api/store/form" enctype="multipart/form-data">
                     <label for="school">School</label>
                     <input class="form-control" list="schools" name="school" id="school"/>
                     <datalist id="schools">
@@ -66,11 +66,10 @@
                     <label for="notes">Notes</label>
                     <textarea class="form-control" name="notes" id="notes"></textarea>
 
-                    <label for="drop-file">Grades File (.bau)</label>
-                    <section class="droparea">
-                        <i class="fa fa-file" aria-hidden="true"></i>
-                        <p>Drop your .bau file here</p>
-                    </section>
+                    <label>Grades File (.bau)</label>
+                    <div>
+                        <input type="file" name="grades_file" accept=".bau"/>
+                    </div>
 
                     <div id="btn-container">
                         <button class="btn btn-primary" id="storeGrades" type="submit">Save</button>
