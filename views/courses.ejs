@@ -13,36 +13,58 @@
     
     <%- include("includes/navbar.ejs")%>
 
-    <div class="container">
-        <div class="row" id="row">
-            <div class="col-md-12">
-                <div class="card" id="card-container">
-                    <div class="card-body" id="card">
-                    <% if (courses.length == 0) { %> 
-                        <h1 style="margin-top: 5rem;">No Courses found!</h1>
-                    <% } else { %>
-                        <div class="table-responsive">
-                            <table class="table">
-                                <thead>
-                                    <tr>
-                                        <!-- add all column names with <th></th> -->
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <% courses.forEach((course, _) => { %>
-                                        <tr>
-                                            <!-- add all data with <td></td> -->
-                                        </tr>
-                                    <% }) %>
-                                </tbody>
-                            </table>
+    <% if (Object.keys(schools).length === 0) { %> 
+        <div class="container">
+            <div class="row" id="row">
+                <div class="col-md-12">
+                    <div class="card" id="card-container">
+                        <div class="card-body" id="card">
+                            <h1 style="margin-top: 5rem;">No Courses found!</h1>
                         </div>
-                    <% } %>
                     </div>
                 </div>
             </div>
         </div>
-    </div>
+    <% } else { %>
+        <% for (const school in schools) { %>
+            <div class="container">
+                <div class="row" id="row">
+                    <div class="col-md-12">
+                        <div class="card" id="card-container">
+                            <div class="card-body" id="card">
+                                <h2> <%= school %> </h2>
+                                <div class="table-responsive">
+                                    <table class="table">
+                                        <thead>
+                                            <tr>
+                                                <th> Course Code </th>
+                                                <th> Course Name </th>
+                                                <td style="visibility:collapse;"></td>
+                                                <th></th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <% for (const course of schools[school]) { %>
+                                                <tr>
+                                                    <form method="POST" action="api/get/all">
+                                                        <td><input readonly name="code" id="inputTable" value="<%= course.code %>"/></td>
+                                                        <td><input readonly name="name" id="inputTable" value="<%= course.name %>"/></td>
+                                                        <td style="visibility:collapse;"><input id="inputTable" type="hidden" name="school" value="<%= school %>"/></td>
+                                                        <td> <button class="btn btn-secondary">More</button> </td>
+                                                    </form>
+                                                </tr>
+                                            <% } %>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        <% } %>
+    <% } %>
+
 </body>
 
 </html>
