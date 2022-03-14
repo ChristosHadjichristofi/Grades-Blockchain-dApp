@@ -1,3 +1,5 @@
+const { web3Object } = require('../utils/web3');
+
 exports.getIndex = (req, res, next) => {
     res.render('index.ejs', {
         pageTitle: "Landing Page"
@@ -10,9 +12,11 @@ exports.getForm = (req, res, next) => {
     });
 }
 
-exports.getData = (req, res, next) => {
-    res.render('table.ejs', {
-        pageTitle: "Show Records Page",
-        blockchainData: []
+exports.getCourses = (req, res, next) => {
+    let courses = [];
+
+    res.render('courses.ejs', {
+        pageTitle: "Courses Page",
+        courses
     });
 }

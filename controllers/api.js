@@ -2,6 +2,13 @@ const { web3Object } = require('../utils/web3');
 const crypto = require('crypto');
 
 
+exports.getCoursesData = (req, res, next) => {
+    res.render('table.ejs', {
+        pageTitle: "Show Records Page",
+        blockchainData: []
+    });
+}
+
 exports.postStoreForm = (req, res, next) => {
     const sha256 = x => crypto.createHash('sha256').update(x, 'utf8').digest('hex');
 
@@ -31,9 +38,24 @@ exports.postStoreForm = (req, res, next) => {
         grades_asset_hash: grades_asset_hash,
         update_status: update_status,
         notes: notes
-    }
+    };
 
-    console.log(gradeInfo);
-    console.log(grades_asset_hash);
+    const schoolHashed = sha256(school);
+    const key = sha256(course + "_" + year + "_" + period);
+    const courseHashed = sha256(course);
 
+    web3Object.contracts.grades.deployed()
+    .then(smartContractObj => {
+        return smartContractObj.addRecord.sendTransaction(schoolHashed, JSON.stringify(gradeInfo), key, courseHashed, { from: web3Object.account });
+    })
+    .then(result => {
+        console.log(result);
+
+        // render page and show respective message
+    })
+    .catch(err => {
+        console.log(err);
+
+        // render page and show respective message
+    })
 }
