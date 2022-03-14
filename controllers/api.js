@@ -34,5 +34,6 @@ exports.postStoreForm = (req, res, next) => {
     }
 
     console.log(gradeInfo);
+    console.log(grades_asset_hash);
 
 }
