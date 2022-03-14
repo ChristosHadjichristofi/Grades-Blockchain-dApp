@@ -26,10 +26,6 @@ contract Grades {
         uint64 key;
     }
 
-    struct ReturnCourseGradesData {
-        CourseGradesData[] d;
-    }
-
     // mapping from school(hashed) to mapping of string(course_year_period - hashed) to courseGradesData information
     mapping(uint64 => mapping(uint64 => CourseGradesData[])) GradesMapping;
 
