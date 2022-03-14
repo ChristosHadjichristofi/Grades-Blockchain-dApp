@@ -2,11 +2,34 @@ const { web3Object } = require('../utils/web3');
 const crypto = require('crypto');
 
 
-exports.getCoursesData = (req, res, next) => {
-    res.render('table.ejs', {
-        pageTitle: "Show Records Page",
-        blockchainData: []
-    });
+exports.postCoursesData = (req, res, next) => {
+    const code = sha256(req.body.code);
+    const school = sha256(req.body.school);
+
+    let blockchainData = [];
+
+    web3Object.contracts.grades.deployed()
+    .then(smartContractObj => {
+        return smartContractObj.retrieveCourseGrades.sendTransaction(code, school, { from: web3Object.account });
+    })
+    .then(result => {
+        console.log(result);
+
+        res.render('table.ejs', {
+            pageTitle: "Show Records Page",
+            blockchainData
+        });
+    })
+    .catch(err => {
+        console.log(err);
+
+        res.render('table.ejs', {
+            pageTitle: "Show Records Page",
+            blockchainData
+        });
+    })
+
+    
 }
 
 exports.postStoreForm = (req, res, next) => {
