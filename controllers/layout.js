@@ -18,6 +18,12 @@ exports.getForm = (req, res, next) => {
     });
 }
 
+exports.getAddNodeForm = (req, res, next) => {
+    res.render('add-node-form.ejs', {
+        pageTitle: "Add Node Page"
+    });
+}
+
 exports.getCourses = (req, res, next) => {
     let schools = {};
 

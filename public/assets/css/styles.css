@@ -36,7 +36,7 @@
   max-width: 650px;
 }
 
-#storeGrades {
+#storeGrades, #storeNodePermissions {
   margin-top: 8px;
   padding: 10px;
   border-radius: 8px;
