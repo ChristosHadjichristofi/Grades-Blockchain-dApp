@@ -23,6 +23,13 @@ class w3 {
         this.web3 = new Web3(this.web3Provider);
     }
 
+    async initAccount() {
+        this.web3.eth.getAccounts((err, accounts) => {
+            if (err) console.log(err);
+            this.account = accounts[0];
+        })
+    }
+
     async initContractGrades() {
         const gradesArtifact = fs.readFileSync(__dirname + '/../build/contracts/Grades.json', { encoding: "utf-8" });
         this.contracts.grades = TruffleContract(JSON.parse(gradesArtifact));
@@ -44,6 +51,7 @@ async function start() {
     if (web3Object == null) {
         web3Object = new w3();
         await web3Object.initWeb3();
+        await web3Object.initAccount();
         await web3Object.initContractGrades();
         await web3Object.initContractPermissions();
     }
