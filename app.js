@@ -2,7 +2,6 @@ const express = require('express');
 const path = require('path');
 const fileUpload = require('express-fileupload');
 const { web3Object } = require('./utils/web3');
-require('dotenv').config();
 
 /* ROUTES and how to import routes */
 
