@@ -26,7 +26,9 @@ class w3 {
     async initAccount() {
         this.web3.eth.getAccounts((err, accounts) => {
             if (err) console.log(err);
-            this.account = accounts[0];
+
+            if (accounts == null) console.log("Blockchain not running");
+            else this.account = accounts[0];
         })
     }
 
