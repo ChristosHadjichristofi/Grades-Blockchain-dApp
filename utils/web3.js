@@ -38,13 +38,6 @@ class w3 {
 
         this.contracts.grades.setProvider(this.web3Provider);
     }
-
-    async initContractPermissions() {
-        const permissionsArtifact = fs.readFileSync(__dirname + '/../build/contracts/Permissions.json', { encoding: "utf-8" });
-        this.contracts.permissions = TruffleContract(JSON.parse(permissionsArtifact));
-
-        this.contracts.permissions.setProvider(this.web3Provider);
-    }
 }
 
 let web3Object;
@@ -55,7 +48,6 @@ async function start() {
         await web3Object.initWeb3();
         await web3Object.initAccount();
         await web3Object.initContractGrades();
-        await web3Object.initContractPermissions();
     }
 }
 

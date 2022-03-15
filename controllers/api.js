@@ -88,7 +88,7 @@ exports.postNodePermissions = (req, res, next) => {
     const school = req.body.school;
     const isMaster = req.body.master;
 
-    web3Object.contracts.permissions.deployed()
+    web3Object.contracts.grades.deployed()
     .then(smartContractObj => {
         return smartContractObj.addNetworkNode.sendTransaction(wallet, school, isMaster, { from: web3Object.account });
     })
