@@ -6,7 +6,7 @@ contract Permissions {
     struct NodePermissions {
         bool hasAccess;
         bool isMaster;
-        uint64 school;
+        string school;
     }
 
     address masterNode;
@@ -20,7 +20,7 @@ contract Permissions {
         return nodes[node];
     }
 
-    function addNetworkNode(address node, uint64 school, bool isMaster) public {
+    function addNetworkNode(address node, string memory school, bool isMaster) public {
         require(msg.sender == masterNode, "Only a master node can add a node to network.");
         nodes[node].hasAccess = true;
         nodes[node].isMaster = isMaster;

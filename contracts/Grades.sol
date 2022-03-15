@@ -10,7 +10,7 @@ library NodePermissionsLib {
     struct NodePermissions {
         bool hasAccess;
         bool isMaster;
-        uint64 school;
+        string school;
     }
 }
 
@@ -23,16 +23,16 @@ contract Grades {
     }
 
     struct CoursePeriodsData {
-        uint64 key;
+        string key;
     }
 
     // mapping from school(hashed) to mapping of string(course_year_period - hashed) to courseGradesData information
-    mapping(uint64 => mapping(uint64 => CourseGradesData[])) GradesMapping;
+    mapping(string => mapping(string => CourseGradesData[])) GradesMapping;
 
     // mapping from course(hashed) to course_year_period(hashed)
-    mapping(uint64 => CoursePeriodsData[]) coursePeriods;
+    mapping(string => CoursePeriodsData[]) coursePeriods;
 
-    function addRecord(uint64 school, string memory info, uint64 key, uint64 course) public {
+    function addRecord(string memory school, string memory info, string memory key, string memory course) public {
         // must make a check to see if the sender has permissions
         NodePermissionsLib.NodePermissions memory permissions = pg.retrieveNodePermissions(msg.sender); 
         require(permissions.hasAccess == true, "You must be inserted by a master node to have access");
@@ -47,7 +47,7 @@ contract Grades {
         }
     }
     
-    function retrieveCourseGrades(uint64 course, uint64 school) public view returns(CourseGradesData[] memory) {
+    function retrieveCourseGrades(string memory course, string memory school) public view returns(CourseGradesData[] memory) {
         NodePermissionsLib.NodePermissions memory permissions = pg.retrieveNodePermissions(msg.sender); 
         require(permissions.hasAccess == true, "You must be inserted by a master node to have access");
 
@@ -55,7 +55,7 @@ contract Grades {
 
         if (permissions.isMaster) {
             for (uint i = 0; i < coursePeriods[course].length; i++) {
-                uint64 key = coursePeriods[course][i].key;
+                string memory key = coursePeriods[course][i].key;
                 for (uint j = 0; j < GradesMapping[school][key].length; j++) {
                     result[i].info = GradesMapping[school][key][j].info;
                 }
@@ -63,7 +63,7 @@ contract Grades {
         }
         else {
             for (uint i = 0; i < coursePeriods[course].length; i++) {
-                uint64 key = coursePeriods[course][i].key;
+                string memory key = coursePeriods[course][i].key;
                 for (uint j = 0; j < GradesMapping[permissions.school][key].length; j++) {
                     result[i].info = GradesMapping[permissions.school][key][j].info;
                 }
