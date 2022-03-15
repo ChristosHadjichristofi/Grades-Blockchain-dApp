@@ -19,7 +19,7 @@
                 <h6 class="text-muted card-subtitle mb-2">Complete the following form</h6>
                 <form method="POST" action="api/store/form" enctype="multipart/form-data">
                     <label for="schools">School</label>
-                    <select class="form-control" id="schools" name="school">
+                    <select class="form-control" id="schools" name="school" onchange="optionChanged()">
                         <option value="SCHOOL OF CIVIL ENGINEERING">SCHOOL OF CIVIL ENGINEERING</option>
                         <option value="SCHOOL OF MECHANICAL ENGINEERING">SCHOOL OF MECHANICAL ENGINEERING</option>
                         <option value="SCHOOL OF ELECTRICAL & COMPUTER ENGINEERING">SCHOOL OF ELECTRICAL & COMPUTER ENGINEERING</option>
@@ -42,7 +42,11 @@
                     </select>
 
                     <label for="course">Course</label>
-                    <input class="form-control" type="text" name="course" id="course"/>
+                    <select class="form-control" name="course" id="courses">
+                        <% for (const course of schools[school]) { %>
+                            <option value="<%= course.code %>"><%= course.name %></option>
+                        <% } %>
+                    </select>
 
                     <label for="professor">Professor</label>
                     <input class="form-control" name="professor" id="professor"/>
@@ -82,5 +86,20 @@
         </div>
     </div>
 </body>
+
+<script>
+    function optionChanged() {
+        let options = [];
+        let schoolsMapStr = '<%- JSON.stringify(schools) %>';
+        let schoolsMapping = JSON.parse(schoolsMapStr);
+
+        option = document.getElementById("schools").value;
+        for (const course of schoolsMapping[option]) {
+            options.push("<option value='"+ course.code +"'>" + course.name + "</option>")
+        }
+
+        document.getElementById("courses").innerHTML = options.join();
+    }
+</script>
 
 </html>

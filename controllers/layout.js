@@ -13,9 +13,31 @@ exports.getIndex = (req, res, next) => {
 }
 
 exports.getForm = (req, res, next) => {
-    res.render('form.ejs', {
-        pageTitle: "Add Grades Info Page"
-    });
+    let schools = {};
+
+    models.courses.findAll({
+        raw: true,
+        include: [{
+            model: models.users,
+            on: {
+                col1: sequelize.where(sequelize.col("id"), "=", sequelize.col("courses.users_id"))
+            }
+        }]
+    })
+    .then(coursesArr => {
+        for (const course of coursesArr) {
+            if (!schools.hasOwnProperty(course['user.belongsTo'])) {
+                schools[course['user.belongsTo']] = []
+            }
+            schools[course['user.belongsTo']].push({ code: course.code.toString(), name: course.name })
+        }
+        res.render('form.ejs', {
+            pageTitle: "Add Grades Info Page",
+            schools,
+            school: "SCHOOL OF CIVIL ENGINEERING"
+        });
+    })
+
 }
 
 exports.getAddNodeForm = (req, res, next) => {
@@ -38,7 +60,6 @@ exports.getCourses = (req, res, next) => {
         }] 
     })
     .then(userInfo => {
-        console.log(userInfo)
         if (userInfo.isMaster) {
             return models.courses.findAll({
                 raw: true,
@@ -69,12 +90,6 @@ exports.getCourses = (req, res, next) => {
                 schools[course['user.belongsTo']] = []
             }
             schools[course['user.belongsTo']].push({ code: course.code.toString(), name: course.name })
-            // let c = {
-            //     code: course.code.toString(),
-            //     name: course.name,
-            //     belongsTo: course['user.belongsTo']
-            // };
-            // courses.push(c);
         }
         res.render('courses.ejs', {
             pageTitle: "Courses Page",
