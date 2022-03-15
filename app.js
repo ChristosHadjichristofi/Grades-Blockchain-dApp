@@ -1,6 +1,8 @@
 const express = require('express');
 const path = require('path');
 const fileUpload = require('express-fileupload');
+const session = require('express-session');
+const flash = require('connect-flash');
 const { web3Object } = require('./utils/web3');
 
 /* ROUTES and how to import routes */
@@ -18,6 +20,15 @@ app.use(express.urlencoded({ extended: true }));
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.use(fileUpload());
+
+app.use(flash());
+
+// using env variable for SECRET_SESSION_STRING
+app.use(session({
+    secret: process.env.SECRET_SESSION_STRING,
+    resave: false,
+    saveUninitialized: false
+}));
 
 app.set('view engine', 'ejs');
 app.set('views', 'views');

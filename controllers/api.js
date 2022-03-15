@@ -1,5 +1,6 @@
 const { web3Object } = require('../utils/web3');
 const crypto = require('crypto');
+const formValidate = require('../utils/formValidate');
 
 
 exports.postCoursesData = (req, res, next) => {
@@ -46,7 +47,7 @@ exports.postStoreForm = (req, res, next) => {
     const participants_number = req.body.participants_no;
     const pass_number = req.body.pass_no;
     const grades_asset_url = req.body.grades_asset_url;
-    const grades_asset_hash = sha256(req.files.grades_file.data.toString('utf-8'));
+    const grades_asset_hash = (!req.files) ? null : sha256(req.files.grades_file.data.toString('utf-8'));
     const update_status = req.body.update_status;
     const notes = req.body.notes;
 
@@ -64,6 +65,25 @@ exports.postStoreForm = (req, res, next) => {
         notes: notes
     };
 
+    mandatoryFields = {
+        school: "School",
+        year: "Year",
+        period: "Period",
+        course: "Course",
+        examDate: "Exam Date",
+        participants_number: "Participants Number",
+        pass_number: "Number of Participants Passed",
+        grades_asset_url: "Grades Asset (Url)",
+        grades_asset_hash: "Grades Asset (File Upload)",
+        update_status: "Update Status"
+    }
+
+    validationObj = formValidate.gradesInfo(gradeInfo, mandatoryFields);
+    if(validationObj.error) {
+        req.flash('messages', { type: 'error', value: validationObj.msg })
+        res.redirect('/form');
+    }
+
     const key = course + "_" + year + "_" + period;
 
     web3Object.contracts.grades.deployed()
@@ -71,14 +91,12 @@ exports.postStoreForm = (req, res, next) => {
         return smartContractObj.addRecord.sendTransaction(school, JSON.stringify(gradeInfo), key, course, { from: web3Object.account });
     })
     .then(result => {
-        console.log(result);
-
-        // render page and show respective message
+        req.flash('messages', {type: 'success', value: 'The content of the form was submitted successfully!'})
+        res.redirect('/form');
     })
     .catch(err => {
-        console.log(err);
-
-        // render page and show respective message
+        req.flash('messages', { type: 'error', value: 'Something went wrong!' })
+        res.redirect('/form');
     })
 }
 
@@ -88,18 +106,22 @@ exports.postNodePermissions = (req, res, next) => {
     const school = req.body.school;
     const isMaster = req.body.master;
 
+    validationObj = formValidate.nodePermissions(wallet, school, isMaster);
+    if(validationObj.error) {
+        req.flash('messages', { type: 'error', value: validationObj.msg })
+        res.redirect('/add/node/form');
+    }
+
     web3Object.contracts.grades.deployed()
     .then(smartContractObj => {
         return smartContractObj.addNetworkNode.sendTransaction(wallet, school, isMaster, { from: web3Object.account });
     })
     .then(result => {
-        console.log(result);
-
-        // render page and show respective message
+        req.flash('messages', { type: 'success', value: 'User with Wallet: ' + wallet + " was added successfully as a participant." })
+        res.redirect('/add/node/form');
     })
     .catch(err => {
-        console.log(err);
-
-        // render page and show respective message
+        req.flash('messages', { type: 'error', value: 'Something went wrong!' })
+        res.redirect('/add/node/form');
     })
 }

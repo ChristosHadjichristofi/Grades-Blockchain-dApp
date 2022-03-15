@@ -15,6 +15,9 @@ exports.getIndex = (req, res, next) => {
 exports.getForm = (req, res, next) => {
     let schools = {};
 
+    let messages = req.flash("messages");
+    if (messages.length == 0) messages = [];
+
     models.courses.findAll({
         raw: true,
         include: [{
@@ -34,15 +37,20 @@ exports.getForm = (req, res, next) => {
         res.render('form.ejs', {
             pageTitle: "Add Grades Info Page",
             schools,
-            school: "SCHOOL OF CIVIL ENGINEERING"
+            school: "SCHOOL OF CIVIL ENGINEERING",
+            messages: messages
         });
     })
 
 }
 
 exports.getAddNodeForm = (req, res, next) => {
+    let messages = req.flash("messages");
+    if (messages.length == 0) messages = [];
+
     res.render('add-node-form.ejs', {
-        pageTitle: "Add Node Page"
+        pageTitle: "Add Node Page",
+        messages: messages
     });
 }
 
