@@ -3,10 +3,9 @@ const crypto = require('crypto');
 
 
 exports.postCoursesData = (req, res, next) => {
-    const sha256 = x => crypto.createHash('sha256').update(x, 'utf8').digest('hex');
 
-    const code = sha256(req.body.code);
-    const school = sha256(req.body.school);
+    const code = req.body.code;
+    const school = req.body.school;
 
     let blockchainData = [];
 
@@ -65,13 +64,11 @@ exports.postStoreForm = (req, res, next) => {
         notes: notes
     };
 
-    const schoolHashed = sha256(school);
-    const key = sha256(course + "_" + year + "_" + period);
-    const courseHashed = sha256(course);
+    const key = course + "_" + year + "_" + period;
 
     web3Object.contracts.grades.deployed()
     .then(smartContractObj => {
-        return smartContractObj.addRecord.sendTransaction(schoolHashed, JSON.stringify(gradeInfo), key, courseHashed, { from: web3Object.account });
+        return smartContractObj.addRecord.sendTransaction(school, JSON.stringify(gradeInfo), key, course, { from: web3Object.account });
     })
     .then(result => {
         console.log(result);
@@ -86,10 +83,9 @@ exports.postStoreForm = (req, res, next) => {
 }
 
 exports.postNodePermissions = (req, res, next) => {
-    const sha256 = x => crypto.createHash('sha256').update(x, 'utf8').digest('hex');
 
     const wallet = req.body.wallet;
-    const school = sha256(req.body.school);
+    const school = req.body.school;
     const isMaster = req.body.master;
 
     web3Object.contracts.permissions.deployed()
