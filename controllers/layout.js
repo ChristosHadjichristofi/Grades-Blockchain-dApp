@@ -7,9 +7,23 @@ var models = initModels(sequelize);
 // end of require models
 
 exports.getIndex = (req, res, next) => {
-    res.render('index.ejs', {
-        pageTitle: "Landing Page"
-    });
+    models.users.findOne({
+        raw: true,
+        where: { wallet: process.env.LOCAL_NODE_ADDR },
+        include: [{
+            model: models.permissions,
+            on: {
+                col1: sequelize.where(sequelize.col("users_id"), "=", sequelize.col("users.id"))
+            }
+        }]
+    })
+    .then(userObj => {
+        res.render('index.ejs', {
+            pageTitle: "Landing Page",
+            isMaster: userObj['permission.isMaster']
+        });
+    })
+    
 }
 
 exports.getForm = (req, res, next) => {
