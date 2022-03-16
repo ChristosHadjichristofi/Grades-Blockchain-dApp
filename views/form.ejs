@@ -20,18 +20,23 @@
                 <h6 class="text-muted card-subtitle mb-2">Complete the following form</h6>
                 <form method="POST" action="api/store/form" enctype="multipart/form-data">
                     <label for="schools">School</label>
-                    <select class="form-control" id="schools" name="school" onchange="optionChanged()">
-                        <option value="SCHOOL OF CIVIL ENGINEERING">SCHOOL OF CIVIL ENGINEERING</option>
-                        <option value="SCHOOL OF MECHANICAL ENGINEERING">SCHOOL OF MECHANICAL ENGINEERING</option>
-                        <option value="SCHOOL OF ELECTRICAL & COMPUTER ENGINEERING">SCHOOL OF ELECTRICAL & COMPUTER ENGINEERING</option>
-                        <option value="SCHOOL OF ARCHITECTURE">SCHOOL OF ARCHITECTURE</option>
-                        <option value="SCHOOL OF CHEMICAL ENGINEERING">SCHOOL OF CHEMICAL ENGINEERING</option>
-                        <option value="SCHOOL OF RURAL, SURVEYING AND GEOINFORMATICS ENGINEERING">SCHOOL OF RURAL, SURVEYING AND GEOINFORMATICS ENGINEERING</option>
-                        <option value="SCHOOL OF MINING & METALLURGICAL ENGINEERING">SCHOOL OF MINING & METALLURGICAL ENGINEERING</option>
-                        <option value="SCHOOL OF NAVAL ARCHITECTURE & MARINE ENGINEERING">SCHOOL OF NAVAL ARCHITECTURE & MARINE ENGINEERING</option>
-                        <option value="SCHOOL OF APPLIED MATHEMATICAL & PHYSICAL SCIENCES">SCHOOL OF APPLIED MATHEMATICAL & PHYSICAL SCIENCES</option>
-                    </select>
-                    
+                    <% if (isMaster) { %>
+                        <select class="form-control" id="schools" name="school" onchange="optionChanged()">
+                            <option value="SCHOOL OF CIVIL ENGINEERING">SCHOOL OF CIVIL ENGINEERING</option>
+                            <option value="SCHOOL OF MECHANICAL ENGINEERING">SCHOOL OF MECHANICAL ENGINEERING</option>
+                            <option value="SCHOOL OF ELECTRICAL & COMPUTER ENGINEERING">SCHOOL OF ELECTRICAL & COMPUTER ENGINEERING</option>
+                            <option value="SCHOOL OF ARCHITECTURE">SCHOOL OF ARCHITECTURE</option>
+                            <option value="SCHOOL OF CHEMICAL ENGINEERING">SCHOOL OF CHEMICAL ENGINEERING</option>
+                            <option value="SCHOOL OF RURAL, SURVEYING AND GEOINFORMATICS ENGINEERING">SCHOOL OF RURAL, SURVEYING AND GEOINFORMATICS ENGINEERING</option>
+                            <option value="SCHOOL OF MINING & METALLURGICAL ENGINEERING">SCHOOL OF MINING & METALLURGICAL ENGINEERING</option>
+                            <option value="SCHOOL OF NAVAL ARCHITECTURE & MARINE ENGINEERING">SCHOOL OF NAVAL ARCHITECTURE & MARINE ENGINEERING</option>
+                            <option value="SCHOOL OF APPLIED MATHEMATICAL & PHYSICAL SCIENCES">SCHOOL OF APPLIED MATHEMATICAL & PHYSICAL SCIENCES</option>
+                        </select> 
+                    <% } else { %>
+                        <select class="form-control" id="schools" name="school" onchange="optionChanged()">
+                            <option value="<%= school %>"><%= school %></option>
+                        </select>
+                    <% } %>
                     <label for="year">Year</label>
                     <input class="form-control" type="number" min="1990" max="2030" name="year" id="year"/>
 

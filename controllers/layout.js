@@ -32,34 +32,72 @@ exports.getIndex = (req, res, next) => {
 
 exports.getForm = (req, res, next) => {
     let schools = {};
+    let user;
 
     let messages = req.flash("messages");
     if (messages.length == 0) messages = [];
 
-    models.courses.findAll({
-        raw: true,
-        include: [{
-            model: models.users,
-            on: {
-                col1: sequelize.where(sequelize.col("id"), "=", sequelize.col("courses.users_id"))
-            }
-        }]
-    })
-    .then(coursesArr => {
-        for (const course of coursesArr) {
-            if (!schools.hasOwnProperty(course['user.belongsTo'])) {
-                schools[course['user.belongsTo']] = []
-            }
-            schools[course['user.belongsTo']].push({ code: course.code.toString(), name: course.name })
-        }
-        res.render('form.ejs', {
-            pageTitle: "Add Grades Info Page",
-            schools,
-            school: "SCHOOL OF CIVIL ENGINEERING",
-            messages: messages
+    let findUserPromise = new Promise((resolve, reject) => {
+        models.users.findOne({
+            raw: true,
+            where: { wallet: process.env.LOCAL_NODE_ADDR },
+            include: [{
+                model: models.permissions,
+                on: {
+                    col1: sequelize.where(sequelize.col("users_id"), "=", sequelize.col("users.id"))
+                }
+            }]
+        })
+        .then(userObj => {
+            user = userObj;
+            console.log(user)
+            resolve();
+        })
+        .catch(err => {
+            console.log(err);
+            reject();
         });
     })
 
+    let coursesRetrievePromise = new Promise((resolve, reject) => {
+        models.courses.findAll({
+            raw: true,
+            include: [{
+                model: models.users,
+                on: {
+                    col1: sequelize.where(sequelize.col("id"), "=", sequelize.col("courses.users_id"))
+                }
+            }]
+        })
+        .then(coursesArr => {
+            for (const course of coursesArr) {
+                if (!schools.hasOwnProperty(course['user.belongsTo'])) {
+                    schools[course['user.belongsTo']] = []
+                }
+                schools[course['user.belongsTo']].push({ code: course.code.toString(), name: course.name })
+            }
+            resolve();
+        })
+        .catch(err => {
+            console.log(err);
+            reject();
+        })
+    })
+    
+    Promise.all([findUserPromise, coursesRetrievePromise]).then(() => {
+        res.render('form.ejs', {
+            pageTitle: "Add Grades Info Page",
+            schools,
+            school: user.belongsTo,
+            messages: messages,
+            isMaster: user['permission.isMaster']
+        });
+    })
+    .catch(err => {
+        console.log(err);
+        req.flash('messages', {type: 'error', value: 'Something went wrong!'})
+        res.redirect('/');
+    })
 }
 
 exports.getAddNodeForm = (req, res, next) => {
