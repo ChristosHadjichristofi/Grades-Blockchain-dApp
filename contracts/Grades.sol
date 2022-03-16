@@ -9,9 +9,10 @@ contract Grades {
         bool hasAccess;
         bool isMaster;
         string school;
+        address addr;
     }
     mapping(address => NodePermissions) nodes;
-
+    address[] keysOfNodes;
     /* end of permissions */
 
     /* course grades variables and structs */
@@ -86,11 +87,30 @@ contract Grades {
         return nodes[node];
     }
 
+    function retrieveParticipants() public view returns(NodePermissions[] memory) {
+        NodePermissions memory permissions = retrieveNodePermissions(msg.sender);
+        require(permissions.isMaster == true, "You must be a master node to see participants");
+
+        NodePermissions[] memory result = new NodePermissions[](keysOfNodes.length);
+
+        for (uint i = 0; i < keysOfNodes.length; i++) {
+            address _addr = keysOfNodes[i];
+            result[i].hasAccess = nodes[_addr].hasAccess;
+            result[i].isMaster = nodes[_addr].isMaster;
+            result[i].school = nodes[_addr].school;
+            result[i].addr = nodes[_addr].addr;
+        }
+
+        return result;
+    }
+
     function addNetworkNode(address node, string memory school, bool isMaster) public {
         require(msg.sender == masterNode, "Only a master node can add a node to network.");
+        keysOfNodes.push(node);
         nodes[node].hasAccess = true;
         nodes[node].isMaster = isMaster;
         nodes[node].school = school;
+        nodes[node].addr = node;
     }
 
     function removeNetworkNode(address node) public {
