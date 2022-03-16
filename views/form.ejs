@@ -45,7 +45,7 @@
                     <label for="course">Course</label>
                     <select class="form-control" name="course" id="courses">
                         <% for (const course of schools[school]) { %>
-                            <option value="<%= course.code %>"><%= course.name %></option>
+                            <option value="<%= course.code %>"><%= course.code %> - <%= course.name %></option>
                         <% } %>
                     </select>
 
@@ -96,7 +96,7 @@
 
         option = document.getElementById("schools").value;
         for (const course of schoolsMapping[option]) {
-            options.push("<option value='"+ course.code +"'>" + course.name + "</option>")
+            options.push("<option value='"+ course.code +"'>" + course.code + ' - ' + course.name + "</option>")
         }
 
         document.getElementById("courses").innerHTML = options.join();
