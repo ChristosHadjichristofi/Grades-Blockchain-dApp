@@ -15,6 +15,11 @@ exports.postCoursesData = (req, res, next) => {
         return instance.retrieveCourseGrades.call(code, school, { from: web3Object.account });
     })
     .then(JSON_StringArr => {
+        if (JSON_StringArr.length == 0) {
+            req.flash('messages', { type: 'error', value: "No information found!" })
+            return res.redirect('/courses');
+        }
+
         for (const stringified of JSON_StringArr) {
             retrievedCourseData.push(JSON.parse(stringified))
         }
@@ -22,6 +27,7 @@ exports.postCoursesData = (req, res, next) => {
         res.redirect('/course/' + code);
     })
     .catch(err => {
+        console.log(err.toString())
         req.flash('messages', { type: 'error', value: err.toString() })
         res.redirect('/courses');
     })    
