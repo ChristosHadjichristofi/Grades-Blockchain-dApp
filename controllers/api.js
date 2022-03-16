@@ -22,7 +22,7 @@ exports.postCoursesData = (req, res, next) => {
         res.redirect('/course/' + code);
     })
     .catch(err => {
-        req.flash('messages', { type: 'error', value: 'Something went wrong!' })
+        req.flash('messages', { type: 'error', value: err.toString() })
         res.redirect('/courses');
     })    
 }
@@ -88,7 +88,7 @@ exports.postStoreForm = (req, res, next) => {
         res.redirect('/form');
     })
     .catch(err => {
-        req.flash('messages', { type: 'error', value: 'Something went wrong!' })
+        req.flash('messages', { type: 'error', value: err.toString() })
         res.redirect('/form');
     })
 }
@@ -114,7 +114,7 @@ exports.postNodePermissions = (req, res, next) => {
         res.redirect('/add/node/form');
     })
     .catch(err => {
-        req.flash('messages', { type: 'error', value: 'Something went wrong!' })
+        req.flash('messages', { type: 'error', value: err.toString() })
         res.redirect('/add/node/form');
     })
 }
