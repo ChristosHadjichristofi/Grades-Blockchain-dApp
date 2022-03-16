@@ -8,30 +8,23 @@ exports.postCoursesData = (req, res, next) => {
     const code = req.body.code;
     const school = req.body.school;
 
-    let blockchainData = [];
+    let retrievedCourseData = [];
 
     web3Object.contracts.grades.deployed()
-    .then(smartContractObj => {
-        return smartContractObj.retrieveCourseGrades.sendTransaction(code, school, { from: web3Object.account });
+    .then(instance => {
+        return instance.retrieveCourseGrades.call(code, school, { from: web3Object.account });
     })
-    .then(result => {
-        console.log(result);
-
-        res.render('table.ejs', {
-            pageTitle: "Show Records Page",
-            blockchainData
-        });
+    .then(JSON_StringArr => {
+        for (const stringified of JSON_StringArr) {
+            retrievedCourseData.push(JSON.parse(stringified))
+        }
+        req.flash('retrievedCourseData', retrievedCourseData)
+        res.redirect('/course/' + code);
     })
     .catch(err => {
-        console.log(err);
-
-        res.render('table.ejs', {
-            pageTitle: "Show Records Page",
-            blockchainData
-        });
-    })
-
-    
+        req.flash('messages', { type: 'error', value: 'Something went wrong!' })
+        res.redirect('/courses');
+    })    
 }
 
 exports.postStoreForm = (req, res, next) => {
@@ -81,7 +74,7 @@ exports.postStoreForm = (req, res, next) => {
     validationObj = formValidate.gradesInfo(gradeInfo, mandatoryFields);
     if(validationObj.error) {
         req.flash('messages', { type: 'error', value: validationObj.msg })
-        res.redirect('/form');
+        return res.redirect('/form');
     }
 
     const key = course + "_" + year + "_" + period;
@@ -109,7 +102,7 @@ exports.postNodePermissions = (req, res, next) => {
     validationObj = formValidate.nodePermissions(wallet, school, isMaster);
     if(validationObj.error) {
         req.flash('messages', { type: 'error', value: validationObj.msg })
-        res.redirect('/add/node/form');
+        return res.redirect('/add/node/form');
     }
 
     web3Object.contracts.grades.deployed()

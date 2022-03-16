@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
+    <title> <%= pageTitle %> </title>
+    <link rel="stylesheet" href="/assets/bootstrap/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/assets/css/styles.css">
+</head>
+
+<body>
+    
+    <%- include("includes/navbar.ejs")%>
+
+    <div class="container">
+        <div class="row" id="row">
+            <div class="col-md-12">
+                <div class="card" id="card-container">
+                    <div class="card-body" id="card">
+                    <% if (retrievedCourseData.length == 0) { %> 
+                        <h1 style="margin-top: 5rem;">No Data found!</h1>
+                    <% } else { %>
+                        <h2><%= retrievedCourseData[0].school + " - Course ID: " + retrievedCourseData[0].course %></h2>
+                        <div class="table-responsive">
+                            <table class="table">
+                                <thead>
+                                    <tr>
+                                        <!-- <th>School</th> -->
+                                        <!-- <th>Year</th> -->
+                                        <th>Period</th>
+                                        <!-- <th>Course ID</th> -->
+                                        <th>Exam Date</th>
+                                        <th>Number of Participants</th>
+                                        <th>Number of Participants Passed</th>
+                                        <th>Grades Asset URL</th>
+                                        <th>Grades Asset Hash</th>
+                                        <th>Update Status</th>
+                                        <th>Notes</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <% retrievedCourseData.forEach((course, _) => { %>
+                                        <tr>
+                                            <!-- <td><%= course.school %></td> -->
+                                            <!-- <td><%= course.year %></td> -->
+                                            <td><%= course.period %></td>
+                                            <!-- <td><%= course.course %></td> -->
+                                            <td><%= course.examDate %></td>
+                                            <td><%= course.participants_number %></td>
+                                            <td><%= course.pass_number %></td>
+                                            <td><%= course.grades_asset_url %></td>
+                                            <td><%= course.grades_asset_hash %></td>
+                                            <td><%= course.update_status %></td>
+                                            <td><%= course.notes %></td>
+                                        </tr>
+                                    <% }) %>
+                                </tbody>
+                            </table>
+                        </div>
+                    <% } %>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>

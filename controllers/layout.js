@@ -54,8 +54,21 @@ exports.getAddNodeForm = (req, res, next) => {
     });
 }
 
+exports.getCourseByID = (req, res, next) => {
+    let retrievedCourseData = req.flash("retrievedCourseData");
+    if (retrievedCourseData.length == 0) retrievedCourseData = [];
+
+    res.render('course-info.ejs', {
+        pageTitle: "Course Info Page",
+        retrievedCourseData
+    });
+}
+
 exports.getCourses = (req, res, next) => {
     let schools = {};
+
+    let messages = req.flash("messages");
+    if (messages.length == 0) messages = [];
 
     models.permissions.findOne({
         raw: true,
@@ -101,7 +114,8 @@ exports.getCourses = (req, res, next) => {
         }
         res.render('courses.ejs', {
             pageTitle: "Courses Page",
-            schools
+            schools,
+            messages: messages
         });
 
     })
