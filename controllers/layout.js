@@ -7,6 +7,9 @@ var models = initModels(sequelize);
 // end of require models
 
 exports.getIndex = (req, res, next) => {
+    let messages = req.flash("messages");
+    if (messages.length == 0) messages = [];
+
     models.users.findOne({
         raw: true,
         where: { wallet: process.env.LOCAL_NODE_ADDR },
@@ -20,7 +23,8 @@ exports.getIndex = (req, res, next) => {
     .then(userObj => {
         res.render('index.ejs', {
             pageTitle: "Landing Page",
-            isMaster: userObj['permission.isMaster']
+            isMaster: userObj['permission.isMaster'],
+            messages
         });
     })
     
@@ -134,4 +138,26 @@ exports.getCourses = (req, res, next) => {
 
     })
 
+}
+
+exports.getShowParticipants = (req, res, next) => {
+    let participants = [];
+
+    web3Object.contracts.grades.deployed()
+    .then(instance => {
+        return instance.retrieveParticipants.call({ from: web3Object.account });
+    })
+    .then(participantsRetrieved => {
+        for (const p of participantsRetrieved) {
+            participants.push({ hasAccess: p.hasAccess, isMaster: p.isMaster, school: p.school, wallet: p.addr });
+        }
+        res.render('show-participants.ejs', {
+            pageTitle: "Show Participants Page",
+            participants
+        });
+    })
+    .catch(err => {
+        req.flash('messages', { type: 'error', value: err.toString() })
+        res.redirect('/');
+    })   
 }

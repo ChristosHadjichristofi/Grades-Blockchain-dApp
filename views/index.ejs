@@ -7,6 +7,7 @@
     <title> <%= pageTitle %> </title>
     <link rel="stylesheet" href="/assets/bootstrap/css/bootstrap.min.css">
     <link rel="stylesheet" href="/assets/css/styles.css">
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css">
 </head>
 
 <body>
@@ -48,9 +49,54 @@
                     </div>
                 </div>
             </div>
+            <div class="col-md-6">
+                <div class="card" id="card-container-layout">
+                    <div class="card-body" id="card">
+                        <h4 class="card-title">Show Participants</h4>
+                        <p class="card-text">See all participant nodes. You must be a master node to be able to see the regarding information<p>
+                        <a class="btn btn-primary" href="/show/participants">Go</a>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
     <% } %>
 </body>
+
+<script src="/assets/js/jquery.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
+
+<script>
+    $(document).ready(function() {
+        toastr.options = {
+            "closeButton": true,
+            "positionClass": "toast-bottom-right",
+            "preventDuplicates": false
+        };
+        /* In order to access variables sent to ejs file to script you must Parse them to string */
+        /* then to parse them back to JSON */
+        let messages = '<%- JSON.stringify(messages) %>';
+        messages = JSON.parse(messages);
+        messages.forEach(({
+            type,
+            value
+        }) => {
+            switch (type) {
+                case 'error':
+                    toastr.error(value)
+                    break;
+                case 'success':
+                    toastr.success(value)
+                    break;
+                case 'warning':
+                    toastr.warning(value)
+                    break;
+                default:
+                    toastr.info(value)
+                    break;
+            }
+        });
+    })
+</script>
 
 </html>

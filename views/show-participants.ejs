@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
+    <title> <%= pageTitle %> </title>
+    <link rel="stylesheet" href="/assets/bootstrap/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/assets/css/styles.css">
+</head>
+
+<body>
+    
+    <%- include("includes/navbar.ejs")%>
+
+    <div class="container">
+        <div class="row" id="row">
+            <div class="col-md-12">
+                <div class="card" id="card-container">
+                    <div class="card-body" id="card">
+                    <% if (participants.length == 0) { %> 
+                        <h1 style="margin-top: 5rem;">No Data found!</h1>
+                    <% } else { %>
+                        <div class="table-responsive">
+                            <table class="table">
+                                <thead>
+                                    <tr>
+                                        <th>Wallet</th>
+                                        <th>Has Access</th>
+                                        <th>Master Node</th>
+                                        <th>School</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <% participants.forEach((participant, _) => { %>
+                                        <tr>
+                                            <td><%= participant.wallet %></td>
+                                            <td><%= participant.hasAccess %></td>
+                                            <td><%= participant.isMaster %></td>
+                                            <td><%= participant.school %></td>
+                                        </tr>
+                                    <% }) %>
+                                </tbody>
+                            </table>
+                        </div>
+                    <% } %>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>
