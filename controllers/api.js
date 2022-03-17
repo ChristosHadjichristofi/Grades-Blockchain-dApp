@@ -27,7 +27,6 @@ exports.postCoursesData = (req, res, next) => {
         res.redirect('/course/' + code);
     })
     .catch(err => {
-        console.log(err.toString())
         req.flash('messages', { type: 'error', value: err.toString() })
         res.redirect('/courses');
     })    
@@ -39,10 +38,10 @@ exports.postStoreForm = (req, res, next) => {
     let gradeInfo = {};
 
     const school = req.body.school;
-    const year = req.body.year;
     const period = req.body.period;
     const course = req.body.course;
     const examDate = req.body.exam_date;
+    const year = new Date(req.body.exam_date).getFullYear();
     const participants_number = req.body.participants_no;
     const pass_number = req.body.pass_no;
     const grades_asset_url = req.body.grades_asset_url;
