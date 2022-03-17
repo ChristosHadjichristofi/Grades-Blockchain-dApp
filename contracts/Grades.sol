@@ -33,8 +33,11 @@ contract Grades {
     /* end of course grades */
 
     constructor() {
+        keysOfNodes.push(masterNode);
         nodes[masterNode].hasAccess = true;
         nodes[masterNode].isMaster = true;
+        nodes[masterNode].addr = masterNode;
+        nodes[masterNode].school = "DEPARTMENT OF STUDIES NTUA";
     }
 
     /* grades functions */

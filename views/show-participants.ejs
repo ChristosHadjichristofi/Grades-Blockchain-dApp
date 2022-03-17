@@ -35,8 +35,8 @@
                                     <% participants.forEach((participant, _) => { %>
                                         <tr>
                                             <td><%= participant.wallet %></td>
-                                            <td><%= participant.hasAccess %></td>
-                                            <td><%= participant.isMaster %></td>
+                                            <td><%= participant.hasAccess ? 'Yes' : 'No' %></td>
+                                            <td><%= participant.isMaster ? 'Yes' : 'No' %></td>
                                             <td><%= participant.school %></td>
                                         </tr>
                                     <% }) %>

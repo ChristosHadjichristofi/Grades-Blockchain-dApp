@@ -102,7 +102,7 @@ exports.postNodePermissions = (req, res, next) => {
 
     const wallet = req.body.wallet;
     const school = req.body.school;
-    const isMaster = req.body.master;
+    const isMaster = (req.body.master == 'Yes') ? true : false;
 
     validationObj = formValidate.nodePermissions(wallet, school, isMaster);
     if(validationObj.error) {

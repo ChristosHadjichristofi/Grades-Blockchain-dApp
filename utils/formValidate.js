@@ -15,7 +15,6 @@ exports.nodePermissions = (wallet, school, isMaster) => {
 
     if (!wallet) fieldsMissing.push("Wallet");
     if (!school) fieldsMissing.push("School");
-    if (!isMaster) fieldsMissing.push("isMaster");
 
     if (fieldsMissing.length == 0) return { error: false };
     else return { error: true, msg: "Mandatory Fields (" + fieldsMissing.reduce((text, value, i, array) => text + (i < array.length - 1 ? ', ' : ' and ') + value) + ") are missing!" };

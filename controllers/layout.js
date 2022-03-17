@@ -50,7 +50,6 @@ exports.getForm = (req, res, next) => {
         })
         .then(userObj => {
             user = userObj;
-            console.log(user)
             resolve();
         })
         .catch(err => {
