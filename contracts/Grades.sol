@@ -66,17 +66,13 @@ contract Grades {
         if (permissions.isMaster) {
             for (uint i = 0; i < coursePeriods[course].length; i++) {
                 string memory key = coursePeriods[course][i].key;
-                for (uint j = 0; j < GradesMapping[school][key].length; j++) {
-                    result[i].info = GradesMapping[school][key][j].info;
-                }
+                result[i].info = GradesMapping[school][key][i].info;
             }
         }
         else {
             for (uint i = 0; i < coursePeriods[course].length; i++) {
                 string memory key = coursePeriods[course][i].key;
-                for (uint j = 0; j < GradesMapping[permissions.school][key].length; j++) {
-                    result[i].info = GradesMapping[permissions.school][key][j].info;
-                }
+                result[i].info = GradesMapping[permissions.school][key][i].info;
             }
         }
 
