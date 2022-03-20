@@ -13,57 +13,57 @@
     
     <%- include("includes/navbar.ejs")%>
 
-    <div class="container">
-        <div class="row" id="row">
-            <div class="col-md-12">
-                <div class="card" id="card-container">
-                    <div class="card-body" id="card">
-                    <% if (retrievedCourseData.length == 0) { %> 
-                        <h1 style="margin-top: 5rem;">No Data found!</h1>
-                    <% } else { %>
-                        <h2><%= retrievedCourseData[0].school + " - Course ID: " + retrievedCourseData[0].course %></h2>
-                        <div class="table-responsive">
-                            <table class="table">
-                                <thead>
-                                    <tr>
-                                        <!-- <th>School</th> -->
-                                        <!-- <th>Year</th> -->
-                                        <th>Period</th>
-                                        <!-- <th>Course ID</th> -->
-                                        <th>Exam Date</th>
-                                        <th>Number of Participants</th>
-                                        <th>Number of Participants Passed</th>
-                                        <th>Grades Asset URL</th>
-                                        <th>Grades Asset Hash</th>
-                                        <th>Update Status</th>
-                                        <th>Notes</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <% retrievedCourseData.forEach((course, _) => { %>
-                                        <tr>
-                                            <!-- <td><%= course.school %></td> -->
-                                            <!-- <td><%= course.year %></td> -->
-                                            <td><%= course.period %></td>
-                                            <!-- <td><%= course.course %></td> -->
-                                            <td><%= course.examDate %></td>
-                                            <td><%= course.participants_number %></td>
-                                            <td><%= course.pass_number %></td>
-                                            <td><%= course.grades_asset_url %></td>
-                                            <td><%= course.grades_asset_hash %></td>
-                                            <td><%= course.update_status %></td>
-                                            <td><%= course.notes %></td>
-                                        </tr>
-                                    <% }) %>
-                                </tbody>
-                            </table>
-                        </div>
-                    <% } %>
-                    </div>
+    <h2 style="text-align: center; margin-top: 20px;"><%= school %> - Course ID: <%= code %></h2>
+    <div class="container" style="margin-top: 25px;">
+        <% for (const [key, value] of Object.entries(retrievedCourseData)) { %> 
+            <button type="button" class="collapsible"><%= key %></button>
+            <div class="content">
+                <div class="table-responsive">
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th># Participants</th>
+                                <th># Participants Passed</th>
+                                <th>Grades Asset URL</th>
+                                <th>Grades Asset Hash</th>
+                                <th>Status</th>
+                                <th>Notes</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <% value.forEach((course, _) => { %>
+                                <tr>
+                                    <td><%= course.participants_number %></td>
+                                    <td><%= course.pass_number %></td>
+                                    <td><%= course.grades_asset_url %></td>
+                                    <td><%= course.grades_asset_hash %></td>
+                                    <td><%= course.update_status %></td>
+                                    <td><%= course.notes %></td>
+                                </tr>
+                            <% }) %>
+                        </tbody>
+                    </table>
                 </div>
             </div>
-        </div>
+        <% } %>
     </div>
+
 </body>
+    <script>
+        var coll = document.getElementsByClassName("collapsible");
+        var i;
+        
+        for (i = 0; i < coll.length; i++) {
+          coll[i].addEventListener("click", function() {
+            this.classList.toggle("active");
+            var content = this.nextElementSibling;
+            if (content.style.display === "block") {
+              content.style.display = "none";
+            } else {
+              content.style.display = "block";
+            }
+          });
+        }
+    </script>
 
 </html>

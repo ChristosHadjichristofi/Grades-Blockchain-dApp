@@ -1,14 +1,14 @@
 const { web3Object } = require('../utils/web3');
 const crypto = require('crypto');
 const formValidate = require('../utils/formValidate');
-
+const moment = require('moment');
 
 exports.postCoursesData = (req, res, next) => {
 
     const code = req.body.code;
     const school = req.body.school;
 
-    let retrievedCourseData = [];
+    let retrievedCourseData = {};
 
     web3Object.contracts.grades.deployed()
     .then(instance => {
@@ -21,10 +21,23 @@ exports.postCoursesData = (req, res, next) => {
         }
 
         for (const stringified of JSON_StringArr) {
-            retrievedCourseData.push(JSON.parse(stringified))
+            o = JSON.parse(stringified);
+            o.examDate = moment(o.examDate).format("DD/MM/YYYY hh:mm");
+
+            if (!retrievedCourseData.hasOwnProperty(o.period + " - " + o.examDate)) 
+                retrievedCourseData[o.period + " - " + o.examDate] = [];
+            
+            retrievedCourseData[o.period + " - " + o.examDate].push(o);
         }
-        req.flash('retrievedCourseData', retrievedCourseData)
-        res.redirect('/course/' + code);
+        res.render('course-info.ejs', {
+            pageTitle: "Course Info Page",
+            retrievedCourseData,
+            school,
+            code
+        });
+        // req.flash('retrievedCourseData', retrievedCourseData);
+        // req.flash('school', school);
+        // res.redirect('/course/' + code);
     })
     .catch(err => {
         req.flash('messages', { type: 'error', value: err.toString() })
@@ -86,7 +99,7 @@ exports.postStoreForm = (req, res, next) => {
 
     web3Object.contracts.grades.deployed()
     .then(smartContractObj => {
-        return smartContractObj.addRecord.sendTransaction(school, JSON.stringify(gradeInfo), key, course, { from: web3Object.account });
+        return smartContractObj.addRecord.sendTransaction(school, JSON.stringify(gradeInfo), course, { from: web3Object.account });
     })
     .then(result => {
         req.flash('messages', {type: 'success', value: 'The content of the form was submitted successfully!'})

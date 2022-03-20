@@ -109,15 +109,20 @@ exports.getAddNodeForm = (req, res, next) => {
     });
 }
 
-exports.getCourseByID = (req, res, next) => {
-    let retrievedCourseData = req.flash("retrievedCourseData");
-    if (retrievedCourseData.length == 0) retrievedCourseData = [];
+// exports.getCourseByID = (req, res, next) => {
+//     let retrievedCourseData = req.flash("retrievedCourseData");
+//     let school = req.flash('school');
+//     let id = req.params.code;
+//     if (Object.keys(retrievedCourseData).length === 0) retrievedCourseData = {};
+//     else retrievedCourseData = retrievedCourseData[0];
 
-    res.render('course-info.ejs', {
-        pageTitle: "Course Info Page",
-        retrievedCourseData
-    });
-}
+//     res.render('course-info.ejs', {
+//         pageTitle: "Course Info Page",
+//         retrievedCourseData,
+//         school,
+//         id
+//     });
+// }
 
 exports.getCourses = (req, res, next) => {
     let schools = {};
