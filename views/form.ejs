@@ -47,8 +47,14 @@
 
                     <label for="course">Course</label>
                     <select class="form-control" name="course" id="courses">
-                        <% for (const course of schools[school]) { %>
-                            <option value="<%= course.code %>"><%= course.code %> - <%= course.name %></option>
+                        <% if (isMaster) { %> 
+                            <% for (const course of schools["SCHOOL OF CIVIL ENGINEERING"]) { %>
+                                <option value="<%= course.code %>"><%= course.code %> - <%= course.name %></option>
+                            <% } %>
+                        <% } else { %>
+                            <% for (const course of schools[school]) { %>
+                                <option value="<%= course.code %>"><%= course.code %> - <%= course.name %></option>
+                            <% } %>
                         <% } %>
                     </select>
 
