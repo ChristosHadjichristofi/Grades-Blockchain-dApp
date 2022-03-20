@@ -20,15 +20,8 @@ contract Grades {
         string info;
     }
 
-    struct CoursePeriodsData {
-        string key;
-    }
-
     // mapping from school(hashed) to mapping of string(course_year_period - hashed) to courseGradesData information
     mapping(string => mapping(string => CourseGradesData[])) GradesMapping;
-
-    // mapping from course(hashed) to course_year_period(hashed)
-    mapping(string => CoursePeriodsData[]) coursePeriods;
 
     /* end of course grades */
 
@@ -42,38 +35,24 @@ contract Grades {
 
     /* grades functions */
 
-    function addRecord(string memory school, string memory info, string memory key, string memory course) public {
+    function addRecord(string memory school, string memory info, string memory course) public {
         // must make a check to see if the sender has permissions
         NodePermissions memory permissions = retrieveNodePermissions(msg.sender);
         require(permissions.hasAccess == true, "You must be inserted by a master node to have access");
 
-        if (permissions.isMaster) {
-            GradesMapping[school][key].push(CourseGradesData(info));
-            coursePeriods[course].push(CoursePeriodsData(key));
-        }
-        else {
-            GradesMapping[permissions.school][key].push(CourseGradesData(info));
-            coursePeriods[course].push(CoursePeriodsData(key));
-        }
+        if (permissions.isMaster) GradesMapping[school][course].push(CourseGradesData(info));
+        else GradesMapping[permissions.school][course].push(CourseGradesData(info));
     }
 
     function retrieveCourseGrades(string memory course, string memory school) public view returns(CourseGradesData[] memory) {
         NodePermissions memory permissions = retrieveNodePermissions(msg.sender);
         require(permissions.hasAccess == true, "You must be inserted by a master node to have access");
+        if (keccak256(bytes(permissions.school)) != keccak256(bytes(school))) require(permissions.isMaster, "Only a master node can retrieve any schools' data");
 
-        CourseGradesData[] memory result = new CourseGradesData[](coursePeriods[course].length);
+        CourseGradesData[] memory result = new CourseGradesData[](GradesMapping[school][course].length);
 
-        if (permissions.isMaster) {
-            for (uint i = 0; i < coursePeriods[course].length; i++) {
-                string memory key = coursePeriods[course][i].key;
-                result[i].info = GradesMapping[school][key][i].info;
-            }
-        }
-        else {
-            for (uint i = 0; i < coursePeriods[course].length; i++) {
-                string memory key = coursePeriods[course][i].key;
-                result[i].info = GradesMapping[permissions.school][key][i].info;
-            }
+        for (uint i = 0; i < GradesMapping[school][course].length; i++) {
+            result[i].info = GradesMapping[school][course][i].info;
         }
 
         return result;
