@@ -4,7 +4,7 @@ pragma solidity ^0.8.12;
 contract Grades {
 
     /* permissions variables and structs */
-    address masterNode = 0x93DA4769fff723eb1aE347B0C7F07b42f8C9664E;
+    address masterNode = 0xC85056E204304b8b15A4a1F4e6B652c06b916b62;
     struct NodePermissions {
         bool hasAccess;
         bool isMaster;
