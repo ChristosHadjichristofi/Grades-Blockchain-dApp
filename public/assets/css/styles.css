@@ -87,3 +87,13 @@
 .active:after {
   content: "\2796"; /* Unicode character for "minus" sign (-) */
 }
+
+.validate-btn-container {
+  position: absolute;
+  margin-top: 10px;
+  margin-left: 10px;
+}
+
+#validate-btn {
+  border-radius: 12px;
+}

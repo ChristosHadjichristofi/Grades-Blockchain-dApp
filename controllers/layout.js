@@ -1,4 +1,5 @@
 const { web3Object } = require('../utils/web3');
+const moment = require('moment');
 
 // require models
 const sequelize = require('../utils/database');
@@ -109,20 +110,47 @@ exports.getAddNodeForm = (req, res, next) => {
     });
 }
 
-// exports.getCourseByID = (req, res, next) => {
-//     let retrievedCourseData = req.flash("retrievedCourseData");
-//     let school = req.flash('school');
-//     let id = req.params.code;
-//     if (Object.keys(retrievedCourseData).length === 0) retrievedCourseData = {};
-//     else retrievedCourseData = retrievedCourseData[0];
+exports.getCourseByID = (req, res, next) => {
+    let messages = req.flash("messages");
+    if (messages.length == 0) messages = [];
 
-//     res.render('course-info.ejs', {
-//         pageTitle: "Course Info Page",
-//         retrievedCourseData,
-//         school,
-//         id
-//     });
-// }
+    const code = req.params.code;
+    const school = req.params.school;
+
+    let retrievedCourseData = {};
+
+    web3Object.contracts.grades.deployed()
+    .then(instance => {
+        return instance.retrieveCourseGrades.call(code, school, { from: web3Object.account });
+    })
+    .then(JSON_StringArr => {
+        if (JSON_StringArr.length == 0) {
+            req.flash('messages', { type: 'error', value: "No information found!" })
+            return res.redirect('/courses');
+        }
+
+        for (const stringified of JSON_StringArr) {
+            o = JSON.parse(stringified);
+            o.examDate = moment(o.examDate).format("DD/MM/YYYY hh:mm");
+
+            if (!retrievedCourseData.hasOwnProperty(o.period + " - " + o.examDate)) 
+                retrievedCourseData[o.period + " - " + o.examDate] = [];
+            
+            retrievedCourseData[o.period + " - " + o.examDate].push(o);
+        }
+        res.render('course-info.ejs', {
+            pageTitle: "Course Info Page",
+            retrievedCourseData,
+            school,
+            code,
+            messages
+        });
+    })
+    .catch(err => {
+        req.flash('messages', { type: 'error', value: err.toString() })
+        res.redirect('/courses');
+    })
+}
 
 exports.getCourses = (req, res, next) => {
     let schools = {};

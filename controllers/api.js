@@ -1,54 +1,59 @@
 const { web3Object } = require('../utils/web3');
 const crypto = require('crypto');
 const formValidate = require('../utils/formValidate');
-const moment = require('moment');
+const fetch = require('node-fetch');
+const Diff = require('diff');
 
-exports.postCoursesData = (req, res, next) => {
+// exports.postCoursesData = (req, res, next) => {
 
-    const code = req.body.code;
-    const school = req.body.school;
+//     const code = req.body.code;
+//     const school = req.body.school;
 
-    let retrievedCourseData = {};
+//     let retrievedCourseData = {};
 
-    web3Object.contracts.grades.deployed()
-    .then(instance => {
-        return instance.retrieveCourseGrades.call(code, school, { from: web3Object.account });
-    })
-    .then(JSON_StringArr => {
-        if (JSON_StringArr.length == 0) {
-            req.flash('messages', { type: 'error', value: "No information found!" })
-            return res.redirect('/courses');
-        }
+//     web3Object.contracts.grades.deployed()
+//     .then(instance => {
+//         return instance.retrieveCourseGrades.call(code, school, { from: web3Object.account });
+//     })
+//     .then(JSON_StringArr => {
+//         if (JSON_StringArr.length == 0) {
+//             req.flash('messages', { type: 'error', value: "No information found!" })
+//             return res.redirect('/courses');
+//         }
 
-        for (const stringified of JSON_StringArr) {
-            o = JSON.parse(stringified);
-            o.examDate = moment(o.examDate).format("DD/MM/YYYY hh:mm");
+//         for (const stringified of JSON_StringArr) {
+//             o = JSON.parse(stringified);
+//             o.examDate = moment(o.examDate).format("DD/MM/YYYY hh:mm");
 
-            if (!retrievedCourseData.hasOwnProperty(o.period + " - " + o.examDate)) 
-                retrievedCourseData[o.period + " - " + o.examDate] = [];
+//             if (!retrievedCourseData.hasOwnProperty(o.period + " - " + o.examDate)) 
+//                 retrievedCourseData[o.period + " - " + o.examDate] = [];
             
-            retrievedCourseData[o.period + " - " + o.examDate].push(o);
-        }
-        res.render('course-info.ejs', {
-            pageTitle: "Course Info Page",
-            retrievedCourseData,
-            school,
-            code
-        });
-        // req.flash('retrievedCourseData', retrievedCourseData);
-        // req.flash('school', school);
-        // res.redirect('/course/' + code);
-    })
-    .catch(err => {
-        req.flash('messages', { type: 'error', value: err.toString() })
-        res.redirect('/courses');
-    })    
-}
+//             retrievedCourseData[o.period + " - " + o.examDate].push(o);
+//         }
+//         res.render('course-info.ejs', {
+//             pageTitle: "Course Info Page",
+//             retrievedCourseData,
+//             school,
+//             code
+//         });
+//         // req.flash('retrievedCourseData', retrievedCourseData);
+//         // req.flash('school', school);
+//         // res.redirect('/course/' + code);
+//     })
+//     .catch(err => {
+//         req.flash('messages', { type: 'error', value: err.toString() })
+//         res.redirect('/courses');
+//     })    
+// }
 
 exports.postStoreForm = (req, res, next) => {
     const sha256 = x => crypto.createHash('sha256').update(x, 'utf8').digest('hex');
 
     let gradeInfo = {};
+    
+    let fileData;
+    if (!req.files) fileData = null;
+    else fileData = req.files.grades_file.data.toString('utf-8');
 
     const school = req.body.school;
     const period = req.body.period;
@@ -58,7 +63,8 @@ exports.postStoreForm = (req, res, next) => {
     const participants_number = req.body.participants_no;
     const pass_number = req.body.pass_no;
     const grades_asset_url = req.body.grades_asset_url;
-    const grades_asset_hash = (!req.files) ? null : sha256(req.files.grades_file.data.toString('utf-8'));
+    const grades_asset_hash = sha256(fileData);
+    const grades_asset_content = Buffer.from(fileData).toString('base64');
     const update_status = req.body.update_status;
     const notes = req.body.notes;
 
@@ -72,6 +78,7 @@ exports.postStoreForm = (req, res, next) => {
         pass_number: pass_number,
         grades_asset_url: grades_asset_url,
         grades_asset_hash: grades_asset_hash,
+        grades_asset_content: grades_asset_content,
         update_status: update_status,
         notes: notes
     };
@@ -135,4 +142,42 @@ exports.postNodePermissions = (req, res, next) => {
         req.flash('messages', { type: 'error', value: err.toString() })
         res.redirect('/add/node/form');
     })
+}
+
+exports.postValidate = (req, res, next) => {
+    let courseInfo = JSON.parse(req.body.courseInfo);
+    const school = courseInfo.school;
+    const course = courseInfo.course;
+
+    let grades_asset_url = courseInfo.grades_asset_url;
+    console.log(grades_asset_url)
+    fetch(grades_asset_url)
+    .then(response => response.text())
+    .then(data => {
+        // convert from base64 to ascii
+        let grades_asset_content = Buffer.from(courseInfo.grades_asset_content, 'base64').toString('ascii');
+        let asset_url_content = data;
+
+        // check the content of the grades_asset (which is on the blockchain)
+        // with the content of the url
+        // keep all added and removed parts to construct a file (if anything has changed)
+        let added = [], removed = [];
+        const diff = Diff.diffChars(grades_asset_content, asset_url_content);
+        diff.forEach(part => {
+            if (part.added) added.push(part.value);
+            if (part.removed) removed.push(part.value);
+        });
+
+        if (added.length == 0 && removed.length == 0) {
+            req.flash('messages', { type: 'success', value: "The file located at the URL has not been changed!" })
+            res.redirect('/' + school + '/course/' + course);
+        }
+        else {
+            // TODO: Download the URL File, the File on the Blockchain, the differences
+            req.flash('messages', { type: 'error', value: "The file located at the URL has been changed! (File downloaded)" })
+            res.redirect('/' + school + '/course/' + course);
+        }
+    });
+
+    
 }

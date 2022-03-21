@@ -7,6 +7,7 @@
     <title> <%= pageTitle %> </title>
     <link rel="stylesheet" href="/assets/bootstrap/css/bootstrap.min.css">
     <link rel="stylesheet" href="/assets/css/styles.css">
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css">
 </head>
 
 <body>
@@ -16,6 +17,12 @@
     <h2 style="text-align: center; margin-top: 20px;"><%= school %> - Course ID: <%= code %></h2>
     <div class="container" style="margin-top: 25px;">
         <% for (const [key, value] of Object.entries(retrievedCourseData)) { %> 
+            <form class="validate-btn-container" action="/api/validate" method="POST">
+                <input hidden id="courseInfo" name="courseInfo" value="<%= JSON.stringify(value[value.length - 1]) %>">
+                <button class="btn btn-primary" id="validate-btn">
+                    Validate
+                </button>
+            </form>
             <button type="button" class="collapsible"><%= key %></button>
             <div class="content">
                 <div class="table-responsive">
@@ -24,19 +31,19 @@
                             <tr>
                                 <th># Participants</th>
                                 <th># Participants Passed</th>
-                                <th>Grades Asset URL</th>
-                                <th>Grades Asset Hash</th>
+                                <!-- <th>Grades Asset URL</th> -->
+                                <!-- <th>Grades Asset Hash</th> -->
                                 <th>Status</th>
                                 <th>Notes</th>
                             </tr>
                         </thead>
                         <tbody>
-                            <% value.forEach((course, _) => { %>
+                            <% value.forEach((course, i) => { %>
                                 <tr>
                                     <td><%= course.participants_number %></td>
                                     <td><%= course.pass_number %></td>
-                                    <td><%= course.grades_asset_url %></td>
-                                    <td><%= course.grades_asset_hash %></td>
+                                    <!-- <td><%= course.grades_asset_url %></td> -->
+                                    <!-- <td><%= course.grades_asset_hash %></td> -->
                                     <td><%= course.update_status %></td>
                                     <td><%= course.notes %></td>
                                 </tr>
@@ -49,6 +56,9 @@
     </div>
 
 </body>
+    <script src="/assets/js/jquery.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
+   
     <script>
         var coll = document.getElementsByClassName("collapsible");
         var i;
@@ -64,6 +74,39 @@
             }
           });
         }
+    </script>
+    
+    <script>
+        $(document).ready(function() {
+            toastr.options = {
+                "closeButton": true,
+                "positionClass": "toast-bottom-right",
+                "preventDuplicates": false
+            };
+            /* In order to access variables sent to ejs file to script you must Parse them to string */
+            /* then to parse them back to JSON */
+            let messages = '<%- JSON.stringify(messages) %>';
+            messages = JSON.parse(messages);
+            messages.forEach(({
+                type,
+                value
+            }) => {
+                switch (type) {
+                    case 'error':
+                        toastr.error(value)
+                        break;
+                    case 'success':
+                        toastr.success(value)
+                        break;
+                    case 'warning':
+                        toastr.warning(value)
+                        break;
+                    default:
+                        toastr.info(value)
+                        break;
+                }
+            });
+        })
     </script>
 
 </html>
