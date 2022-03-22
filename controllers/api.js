@@ -137,7 +137,7 @@ exports.postValidate = (req, res, next) => {
 
             if (added.length == 0 && removed.length == 0) {
                 req.flash('messages', { type: 'success', value: "The file located at the URL has not been changed!" })
-                res.redirect('/' + school + '/course/' + course);
+                res.redirect('/' + school.split(' ').join('-') + '/course/' + course);
             }
             else {
                 // TODO: Format differences on a file and download
