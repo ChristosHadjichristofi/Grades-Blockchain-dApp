@@ -8,6 +8,7 @@
   },
   "scripts": {
     "start": "nodemon server.js",
+    "create-data": "node bauGenerator/create.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
@@ -34,6 +35,7 @@
     "express-fileupload": "^1.3.1",
     "express-session": "^1.17.2",
     "express-zip": "^3.0.0",
+    "faker": "^5.5.3",
     "fs-extra": "^10.0.1",
     "moment": "^2.29.1",
     "mysql2": "^2.3.3",

@@ -35,8 +35,12 @@ app.set('view engine', 'ejs');
 app.set('views', 'views');
 
 // create downloads folder
-const dir = 'downloads/';
-fs.ensureDirSync(dir);
+const downloadsDir = 'downloads/';
+fs.ensureDirSync(downloadsDir);
+
+// create downloads folder
+const bauGeneratorDir = 'bauGenerator/dummy';
+fs.ensureDirSync(bauGeneratorDir);
 
 /* Routes used by the project */
 
