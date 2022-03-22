@@ -114,54 +114,43 @@ exports.postValidate = (req, res, next) => {
     .then(response => response.text())
     .then(data => {
         // convert from base64 to ascii
-        let grades_asset_content = Buffer.from(courseInfo.grades_asset_content, 'base64').toString('ascii');
-        let asset_url_content = data;
+        let grades_asset_content;
+        let asset_url_content;
+        
+        getDataPromise = new Promise((resolve, reject) => {
+            grades_asset_content = Buffer.from(courseInfo.grades_asset_content, 'base64').toString('ascii');
+            asset_url_content = data;
+            resolve();
+        })
 
-        // check the content of the grades_asset (which is on the blockchain)
-        // with the content of the url
-        // keep all added and removed parts to construct a file (if anything has changed)
-        let added = [], removed = [];
-        const diff = Diff.diffLines(grades_asset_content, asset_url_content);
+        Promise.all([getDataPromise]).then(() => {
+            // check the content of the grades_asset (which is on the blockchain)
+            // with the content of the url
+            // keep all added and removed parts to construct a file (if anything has changed)
+            let added = [], removed = [];
+            const diff = Diff.diffLines(grades_asset_content, asset_url_content);
 
-        diff.forEach(part => {
-            if (part.added) added.push(part.value);
-            if (part.removed) removed.push(part.value);
-        });
-
-        if (added.length == 0 && removed.length == 0) {
-            req.flash('messages', { type: 'success', value: "The file located at the URL has not been changed!" })
-            res.redirect('/' + school + '/course/' + course);
-        }
-        else {
-            // TODO: Format differences on a file and download
-            createSavedFilePromise = new Promise((resolve, reject) => {
-                fs.writeFile('downloads/saved_file.bau', grades_asset_content, (err) => {
-                    if (err) {
-                        req.flash('messages', { type: 'error', value: "Something went wrong!" })
-                        return res.redirect('/' + school + '/course/' + course);
-                    }
-                    resolve();
-                });
+            diff.forEach(part => {
+                if (part.added) added.push(part.value);
+                if (part.removed) removed.push(part.value);
             });
 
-            createUrlFilePromise = new Promise((resolve, reject) => {
-                fs.writeFile('downloads/url_file.bau', asset_url_content, (err) => {
-                    if (err) {
-                        req.flash('messages', { type: 'error', value: "Something went wrong!" })
-                        return res.redirect('/' + school + '/course/' + course);
-                    }
-                    resolve();
-                });
-            });
-            
-            Promise.all([createSavedFilePromise, createUrlFilePromise]).then(() => {
+            if (added.length == 0 && removed.length == 0) {
+                req.flash('messages', { type: 'success', value: "The file located at the URL has not been changed!" })
+                res.redirect('/' + school + '/course/' + course);
+            }
+            else {
+                // TODO: Format differences on a file and download
+                fs.writeFileSync('downloads/saved_file.bau', grades_asset_content);
+                fs.writeFileSync('downloads/url_file.bau', asset_url_content);
+                                
                 req.flash('messages', { type: 'error', value: "The file located at the URL has been changed! (File downloaded)" })
                 res.location('/' + school + '/course/' + course);
                 res.zip([
                     { path: "downloads/saved_file.bau", name: "saved_file.bau" },
                     { path: "downloads/url_file.bau", name: "url_file.bau" },
                 ], "files.zip");
-            });
-        }
+            }
+        })
     });
 }
