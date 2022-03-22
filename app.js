@@ -4,6 +4,7 @@ const fileUpload = require('express-fileupload');
 const session = require('express-session');
 const flash = require('connect-flash');
 const { web3Object } = require('./utils/web3');
+const fs = require('fs-extra');
 
 /* ROUTES and how to import routes */
 
@@ -32,6 +33,10 @@ app.use(session({
 
 app.set('view engine', 'ejs');
 app.set('views', 'views');
+
+// create downloads folder
+const dir = 'downloads/';
+fs.ensureDirSync(dir);
 
 /* Routes used by the project */
 

@@ -3,48 +3,8 @@ const crypto = require('crypto');
 const formValidate = require('../utils/formValidate');
 const fetch = require('node-fetch');
 const Diff = require('diff');
-
-// exports.postCoursesData = (req, res, next) => {
-
-//     const code = req.body.code;
-//     const school = req.body.school;
-
-//     let retrievedCourseData = {};
-
-//     web3Object.contracts.grades.deployed()
-//     .then(instance => {
-//         return instance.retrieveCourseGrades.call(code, school, { from: web3Object.account });
-//     })
-//     .then(JSON_StringArr => {
-//         if (JSON_StringArr.length == 0) {
-//             req.flash('messages', { type: 'error', value: "No information found!" })
-//             return res.redirect('/courses');
-//         }
-
-//         for (const stringified of JSON_StringArr) {
-//             o = JSON.parse(stringified);
-//             o.examDate = moment(o.examDate).format("DD/MM/YYYY hh:mm");
-
-//             if (!retrievedCourseData.hasOwnProperty(o.period + " - " + o.examDate)) 
-//                 retrievedCourseData[o.period + " - " + o.examDate] = [];
-            
-//             retrievedCourseData[o.period + " - " + o.examDate].push(o);
-//         }
-//         res.render('course-info.ejs', {
-//             pageTitle: "Course Info Page",
-//             retrievedCourseData,
-//             school,
-//             code
-//         });
-//         // req.flash('retrievedCourseData', retrievedCourseData);
-//         // req.flash('school', school);
-//         // res.redirect('/course/' + code);
-//     })
-//     .catch(err => {
-//         req.flash('messages', { type: 'error', value: err.toString() })
-//         res.redirect('/courses');
-//     })    
-// }
+const fs = require('fs');
+const zip = require('express-zip');
 
 exports.postStoreForm = (req, res, next) => {
     const sha256 = x => crypto.createHash('sha256').update(x, 'utf8').digest('hex');
@@ -150,7 +110,6 @@ exports.postValidate = (req, res, next) => {
     const course = courseInfo.course;
 
     let grades_asset_url = courseInfo.grades_asset_url;
-    console.log(grades_asset_url)
     fetch(grades_asset_url)
     .then(response => response.text())
     .then(data => {
@@ -162,7 +121,8 @@ exports.postValidate = (req, res, next) => {
         // with the content of the url
         // keep all added and removed parts to construct a file (if anything has changed)
         let added = [], removed = [];
-        const diff = Diff.diffChars(grades_asset_content, asset_url_content);
+        const diff = Diff.diffLines(grades_asset_content, asset_url_content);
+
         diff.forEach(part => {
             if (part.added) added.push(part.value);
             if (part.removed) removed.push(part.value);
@@ -173,11 +133,35 @@ exports.postValidate = (req, res, next) => {
             res.redirect('/' + school + '/course/' + course);
         }
         else {
-            // TODO: Download the URL File, the File on the Blockchain, the differences
-            req.flash('messages', { type: 'error', value: "The file located at the URL has been changed! (File downloaded)" })
-            res.redirect('/' + school + '/course/' + course);
+            // TODO: Format differences on a file and download
+            createSavedFilePromise = new Promise((resolve, reject) => {
+                fs.writeFile('downloads/saved_file.bau', grades_asset_content, (err) => {
+                    if (err) {
+                        req.flash('messages', { type: 'error', value: "Something went wrong!" })
+                        return res.redirect('/' + school + '/course/' + course);
+                    }
+                    resolve();
+                });
+            });
+
+            createUrlFilePromise = new Promise((resolve, reject) => {
+                fs.writeFile('downloads/url_file.bau', asset_url_content, (err) => {
+                    if (err) {
+                        req.flash('messages', { type: 'error', value: "Something went wrong!" })
+                        return res.redirect('/' + school + '/course/' + course);
+                    }
+                    resolve();
+                });
+            });
+            
+            Promise.all([createSavedFilePromise, createUrlFilePromise]).then(() => {
+                req.flash('messages', { type: 'error', value: "The file located at the URL has been changed! (File downloaded)" })
+                res.location('/' + school + '/course/' + course);
+                res.zip([
+                    { path: "downloads/saved_file.bau", name: "saved_file.bau" },
+                    { path: "downloads/url_file.bau", name: "url_file.bau" },
+                ], "files.zip");
+            });
         }
     });
-
-    
 }
