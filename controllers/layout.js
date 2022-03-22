@@ -115,7 +115,7 @@ exports.getCourseByID = (req, res, next) => {
     if (messages.length == 0) messages = [];
 
     const code = req.params.code;
-    const school = req.params.school;
+    const school = req.params.school.split("-").join(" ");
 
     let retrievedCourseData = {};
 

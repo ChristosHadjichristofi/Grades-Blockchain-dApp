@@ -50,7 +50,7 @@
                                                     <td><input readonly name="code" id="inputTable" value="<%= course.code %>"/></td>
                                                     <td><input readonly name="name" id="inputTable" value="<%= course.name %>"/></td>
                                                     <!-- <td style="visibility:collapse;"><input id="inputTable" type="hidden" name="school" value="<%= school %>"/></td> -->
-                                                    <form method="GET" action="<%= school %>/course/<%= course.code %>">
+                                                    <form method="GET" action="<%= school.split(' ').join('-') %>/course/<%= course.code %>">
                                                         <td> <button class="btn btn-secondary">More</button> </td>
                                                     </form>
                                                 </tr>
