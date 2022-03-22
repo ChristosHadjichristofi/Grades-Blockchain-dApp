@@ -10,7 +10,7 @@
     <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css">
 </head>
 
-<body>
+<body id="body">
     
     <%- include("includes/navbar.ejs")%>
 
@@ -18,7 +18,7 @@
         <div class="row" id="row">
             <div class="col-md-6">
                 <div class="card" id="card-container-layout">
-                    <div class="card-body" id="card">
+                    <div class="card-body" id="card" style="padding-left: 40px; padding-right: 40px;">
                         <h4 class="card-title">Form Completion</h4>
                         <p class="card-text">Add a new Grades Information to the Blockchain</p>
                         <a class="btn btn-primary" href="/form">Go</a>
@@ -61,7 +61,11 @@
         </div>
     </div>
     <% } %>
+
+    <%- include("includes/footer.ejs")%>
+
 </body>
+
 
 <script src="/assets/js/jquery.min.js"></script>
 <script src="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>

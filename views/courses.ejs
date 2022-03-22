@@ -10,7 +10,7 @@
     <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css">
 </head>
 
-<body>
+<body id="body">
     
     <%- include("includes/navbar.ejs")%>
 
@@ -35,23 +35,21 @@
                             <div class="card-body" id="card">
                                 <h2> <%= school %> </h2>
                                 <div class="table-responsive">
-                                    <table class="table">
+                                    <table class="table" style="width: 100%;">
                                         <thead>
                                             <tr>
                                                 <th> Course Code </th>
                                                 <th> Course Name </th>
-                                                <td style="visibility:collapse;"></td>
                                                 <th></th>
                                             </tr>
                                         </thead>
                                         <tbody>
                                             <% for (const course of schools[school]) { %>
                                                 <tr>
-                                                    <td><input readonly name="code" id="inputTable" value="<%= course.code %>"/></td>
-                                                    <td><input readonly name="name" id="inputTable" value="<%= course.name %>"/></td>
-                                                    <!-- <td style="visibility:collapse;"><input id="inputTable" type="hidden" name="school" value="<%= school %>"/></td> -->
+                                                    <td><%= course.code %></td>
+                                                    <td><%= course.name %></td>
                                                     <form method="GET" action="<%= school.split(' ').join('-') %>/course/<%= course.code %>">
-                                                        <td> <button class="btn btn-secondary">More</button> </td>
+                                                        <td style="width: 15%;"> <button class="btn btn-primary">More</button> </td>
                                                     </form>
                                                 </tr>
                                             <% } %>
@@ -65,6 +63,8 @@
             </div>
         <% } %>
     <% } %>
+
+    <%- include("includes/footer.ejs")%>
 
 </body>
 
