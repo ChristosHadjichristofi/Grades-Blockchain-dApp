@@ -4,7 +4,7 @@ const formValidate = require('../utils/formValidate');
 const fetch = require('node-fetch');
 const Diff = require('diff');
 const fs = require('fs');
-const zip = require('express-zip');
+const Diff2html = require('diff2html');
 
 exports.postStoreForm = (req, res, next) => {
     const sha256 = x => crypto.createHash('sha256').update(x, 'utf8').digest('hex');
@@ -108,6 +108,7 @@ exports.postValidate = (req, res, next) => {
     let courseInfo = JSON.parse(req.body.courseInfo);
     const school = courseInfo.school;
     const course = courseInfo.course;
+    const belongs = courseInfo.period + " - " + courseInfo.examDate;
 
     let grades_asset_url = courseInfo.grades_asset_url;
     fetch(grades_asset_url)
@@ -135,21 +136,34 @@ exports.postValidate = (req, res, next) => {
                 if (part.removed) removed.push(part.value);
             });
 
+            const diffJson = Diff2html.parse(Diff.createTwoFilesPatch('file_from_blockchain.bau', 'file_from_url.bau', grades_asset_content, asset_url_content));
+            const diffHtml = Diff2html.html(diffJson, { 
+                drawFileList: true,
+                fileListToggle: false,
+                fileListStartVisible: false,
+                fileContentToggle: false,
+                matching: 'lines',
+                outputFormat: 'side-by-side',
+                synchronisedScroll: true,
+                highlight: true,
+                renderNothingWhenEmpty: false,
+            });
+            
             if (added.length == 0 && removed.length == 0) {
                 req.flash('messages', { type: 'success', value: "The file located at the URL has not been changed!" })
                 res.redirect('/' + school.split(' ').join('-') + '/course/' + course);
             }
             else {
-                // TODO: Format differences on a file and download
-                fs.writeFileSync('downloads/saved_file.bau', grades_asset_content);
-                fs.writeFileSync('downloads/url_file.bau', asset_url_content);
-                                
-                req.flash('messages', { type: 'error', value: "The file located at the URL has been changed! (File downloaded)" })
-                res.location('/' + school + '/course/' + course);
-                res.zip([
-                    { path: "downloads/saved_file.bau", name: "saved_file.bau" },
-                    { path: "downloads/url_file.bau", name: "url_file.bau" },
-                ], "files.zip");
+                fs.writeFileSync('public/downloads/file_from_blockchain.bau', grades_asset_content);
+                fs.writeFileSync('public/downloads/file_from_url.bau', asset_url_content);
+                
+                res.render('diff.ejs', {
+                    pageTitle: "Diff Page",
+                    diffHtml: diffHtml,
+                    school: school,
+                    course: course,
+                    belongs: belongs
+                });
             }
         })
     });

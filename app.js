@@ -35,7 +35,7 @@ app.set('view engine', 'ejs');
 app.set('views', 'views');
 
 // create downloads folder
-const downloadsDir = 'downloads/';
+const downloadsDir = 'public/downloads/';
 fs.ensureDirSync(downloadsDir);
 
 // create downloads folder

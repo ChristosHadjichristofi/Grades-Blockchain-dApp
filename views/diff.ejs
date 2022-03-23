@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en-us">
+<head>
+    <meta charset="utf-8" />
+    <!-- Make sure to load the highlight.js CSS file before the Diff2Html CSS file -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.7.1/styles/github.min.css" />
+    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/diff2html/bundles/css/diff2html.min.css"/>
+    <link rel="stylesheet" href="/assets/bootstrap/css/bootstrap.min.css">
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/diff2html/bundles/js/diff2html-ui.min.js"></script>
+</head>
+
+<body>
+    <div style="text-align: center;">
+        <h2><%= school %> - Course ID: <%= course %></h2>
+        <a href="/<%= school.split(' ').join('-') %>/course/<%= course %>"><%= belongs %></a>
+    </div>
+    <div style="margin-top: 20px; margin-bottom: 20px; text-align: center;">
+        <a type="button" class="btn btn-primary" href="/downloads/file_from_blockchain.bau">Download File saved on Blockchain</a>
+        <a type="button" class="btn btn-primary" href="/downloads/file_from_url.bau">Download File from URL</a>
+    </div>
+    <%- diffHtml %>
+</body>
+
+
+</html>
