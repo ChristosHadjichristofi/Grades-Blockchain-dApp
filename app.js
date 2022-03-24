@@ -50,6 +50,6 @@ app.use('/api', api);
 /* End of routes used by the project */
 
 // In case of an endpoint does not exist must return 404.html
-// app.use((req, res, next) => { res.status(404).render('404.ejs', { pageTitle: '404' }) })
+app.use((req, res, next) => { res.status(404).render('404.ejs', { pageTitle: '404' }) })
 
 module.exports = app;
