@@ -95,7 +95,7 @@ exports.postNodePermissions = (req, res, next) => {
         return smartContractObj.addNetworkNode.sendTransaction(wallet, school, isMaster, { from: web3Object.account });
     })
     .then(result => {
-        req.flash('messages', { type: 'success', value: 'User with Wallet: ' + wallet + " was added successfully as a participant." })
+        req.flash('messages', { type: 'success', value: 'User with Wallet: ' + wallet + " was added successfully to the vote list." })
         res.redirect('/add/node/form');
     })
     .catch(err => {
@@ -167,4 +167,23 @@ exports.postValidate = (req, res, next) => {
             }
         })
     });
+}
+
+exports.postVote = (req, res, next) => {
+    const vote = req.query.vote === 'true';
+    const address = req.params.address;
+
+    web3Object.contracts.grades.deployed()
+    .then(smartContractObj => {
+        return smartContractObj.voteAdd.sendTransaction(address, vote, { from: web3Object.account });
+    })
+    .then(result => {
+        req.flash('messages', { type: 'success', value: 'Your vote for user with Wallet ' + address + ' has been submitted.'})
+        res.redirect('/show/vote-list');
+    })
+    .catch(err => {
+        req.flash('messages', { type: 'error', value: err.toString() })
+        res.redirect('/show/vote-list');
+    })
+
 }

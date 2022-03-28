@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
+    <title> <%= pageTitle %> </title>
+    <link rel="stylesheet" href="/assets/bootstrap/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/assets/css/styles.css">
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css">
+</head>
+
+<body id="body">
+    
+    <%- include("includes/navbar.ejs")%>
+
+    <div class="container">
+        <div class="row" id="row">
+            <div class="col-md-12">
+                <div class="card" id="card-container">
+                    <div class="card-body" id="card">
+                    <% if (voteList.length == 0) { %> 
+                        <h1 style="margin-top: 5rem;">No pending votes!</h1>
+                    <% } else { %>
+                        <div class="table-responsive">
+                            <table class="table">
+                                <thead>
+                                    <tr>
+                                        <th>Wallet</th>
+                                        <th># Accepted</th>
+                                        <th># Rejected</th>
+                                        <th></th>
+                                        <th></th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <% voteList.forEach((vote, _) => { %>
+                                        <tr>
+                                            <td><%= vote.address %></td>
+                                            <td><%= vote.yes %></td>
+                                            <td><%= vote.no %></td>
+                                            <form action="/api/vote/<%= vote.address %>?vote=true" method="POST">
+                                                <td>
+                                                    <button style="all: unset; cursor: pointer;" type="submit">
+                                                        <i class="fa fa-check" style="color: green"></i>
+                                                    </button>
+                                                </td>
+                                            </form>
+                                            <form action="/api/vote/<%= vote.address %>?vote=false" method="POST">
+                                                <td>
+                                                    <button style="all: unset; cursor: pointer;" type="submit">
+                                                        <i class="fa fa-ban" style="color: red"></i>
+                                                    </button>
+                                                </td>
+                                            </form>
+                                        </tr>
+                                    <% }) %>
+                                </tbody>
+                            </table>
+                        </div>
+                    <% } %>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <%- include("includes/footer.ejs")%>
+
+</body>
+
+<script src="/assets/js/jquery.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
+
+<script>
+    $(document).ready(function() {
+        toastr.options = {
+            "closeButton": true,
+            "positionClass": "toast-bottom-right",
+            "preventDuplicates": false
+        };
+        /* In order to access variables sent to ejs file to script you must Parse them to string */
+        /* then to parse them back to JSON */
+        let messages = '<%- JSON.stringify(messages) %>';
+        messages = JSON.parse(messages);
+        messages.forEach(({
+            type,
+            value
+        }) => {
+            switch (type) {
+                case 'error':
+                    toastr.error(value)
+                    break;
+                case 'success':
+                    toastr.success(value)
+                    break;
+                case 'warning':
+                    toastr.warning(value)
+                    break;
+                default:
+                    toastr.info(value)
+                    break;
+            }
+        });
+    })
+</script>
+
+</html>

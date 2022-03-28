@@ -16,21 +16,30 @@
 
     <div class="container" id="row-container">
         <div class="row" id="row">
-            <div class="col-md-6">
+            <div class="col-md-4">
                 <div class="card" id="card-container-layout">
-                    <div class="card-body" id="card" style="padding-left: 40px; padding-right: 40px;">
-                        <h4 class="card-title">Form Completion</h4>
-                        <p class="card-text">Add a new Grades Information to the Blockchain</p>
+                    <div class="card-body" id="card" style="padding-left: 30px; padding-right: 30px">
+                        <h5 class="card-title">Form Completion</h5>
+                        <p class="card-text">Add new Grades Information for a specific course to the Blockchain</p>
                         <a class="btn btn-primary" href="/form">Go</a>
                     </div>
                 </div>
             </div>
-            <div class="col-md-6">
+            <div class="col-md-4">
                 <div class="card" id="card-container-layout">
                     <div class="card-body" id="card">
-                        <h4 class="card-title">Show Courses</h4>
+                        <h5 class="card-title">Show Courses</h5>
                         <p class="card-text">List of all school courses. In this page you can see all Grades Information regarding a course<br></p>
                         <a class="btn btn-primary" href="/courses">Show</a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card" id="card-container-layout">
+                    <div class="card-body" id="card">
+                        <h5 class="card-title">Vote List</h5>
+                        <p class="card-text">List of all nodes that applied to be a part of the network. Each participant can vote</p>
+                        <a class="btn btn-primary" href="/show/vote-list">Go</a>
                     </div>
                 </div>
             </div>
@@ -40,21 +49,21 @@
     <% if (isMaster) { %>
     <div class="container" id="row-container">
         <div class="row" id="row">
-            <div class="col-md-6">
+            <div class="col-md-4">
                 <div class="card" id="card-container-layout">
                     <div class="card-body" id="card">
-                        <h4 class="card-title">Add Node</h4>
+                        <h5 class="card-title">Add Node</h5>
                         <p class="card-text">Give access to a new node. You must be a master node to be able to add a new node<p>
                         <a class="btn btn-primary" href="/add/node/form">Go</a>
                     </div>
                 </div>
             </div>
-            <div class="col-md-6">
+            <div class="col-md-4">
                 <div class="card" id="card-container-layout">
                     <div class="card-body" id="card">
-                        <h4 class="card-title">Show Participants</h4>
-                        <p class="card-text">See all participant nodes. You must be a master node to be able to see the regarding information<p>
-                        <a class="btn btn-primary" href="/show/participants">Go</a>
+                        <h5 class="card-title">Show Participants</h5>
+                        <p class="card-text">See all participant nodes. Only a master node is able to see the regarding information<p>
+                        <a class="btn btn-primary" href="/show/participants">Show</a>
                     </div>
                 </div>
             </div>

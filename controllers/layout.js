@@ -229,5 +229,31 @@ exports.getShowParticipants = (req, res, next) => {
     .catch(err => {
         req.flash('messages', { type: 'error', value: err.toString() })
         res.redirect('/');
-    })   
+    }) 
+}
+
+exports.getShowVoteList = (req, res, next) => {
+    let voteList = [];
+
+    let messages = req.flash("messages");
+    if (messages.length == 0) messages = [];
+
+    web3Object.contracts.grades.deployed()
+    .then(instance => {
+        return instance.voteList.call({ from: web3Object.account });
+    })
+    .then(voteListRetrieved => {
+        for (const l of voteListRetrieved) {
+            voteList.push({ address: l.node, yes: l.yes, no: l.no });
+        }
+        res.render('vote-list.ejs', {
+            pageTitle: "Vote List Page",
+            voteList,
+            messages
+        });
+    })
+    .catch(err => {
+        req.flash('messages', { type: 'error', value: err.toString() })
+        res.redirect('/');
+    })
 }

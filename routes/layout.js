@@ -9,5 +9,6 @@ router.get('/courses', layoutController.getCourses);
 router.get('/:school/course/:code', layoutController.getCourseByID);
 router.get('/add/node/form', layoutController.getAddNodeForm);
 router.get('/show/participants', layoutController.getShowParticipants);
+router.get('/show/vote-list', layoutController.getShowVoteList);
 
 module.exports = router;
