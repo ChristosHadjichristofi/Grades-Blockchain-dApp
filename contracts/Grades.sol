@@ -117,10 +117,6 @@ contract Grades {
         return result;
     }
 
-    function retrieveNodeInfo(address _addr) public view returns(NodePermissions memory) {
-        return nodes[_addr];
-    }
-
     function addNetworkNode(address node, string memory school, bool isMaster) public {
         require(msg.sender == masterNode, "Only a master node can add a node to network.");
         require(votes[node].ongoing == false, "There is already a vote ongoing for this node.");
