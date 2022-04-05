@@ -20,6 +20,7 @@ exports.postStoreForm = (req, res, next) => {
     const course = req.body.course;
     const examDate = req.body.exam_date;
     const year = new Date(req.body.exam_date).getFullYear();
+    const professor = req.body.professor;
     const participants_number = req.body.participants_no;
     const pass_number = req.body.pass_no;
     const grades_asset_url = req.body.grades_asset_url;
@@ -34,6 +35,7 @@ exports.postStoreForm = (req, res, next) => {
         period: period,
         course: course,
         examDate: examDate,
+        professor: professor,
         participants_number: participants_number,
         pass_number: pass_number,
         grades_asset_url: grades_asset_url,
@@ -49,6 +51,7 @@ exports.postStoreForm = (req, res, next) => {
         period: "Period",
         course: "Course",
         examDate: "Exam Date",
+        professor: "Professor",
         participants_number: "Participants Number",
         pass_number: "Number of Participants Passed",
         grades_asset_url: "Grades Asset (Url)",

@@ -17,39 +17,43 @@
     <h2 style="text-align: center; margin-top: 20px;"><%= school %> - Course ID: <%= code %></h2>
     <div class="container" style="margin-top: 25px;">
         <% for (const [key, value] of Object.entries(retrievedCourseData)) { %> 
-            <form class="validate-btn-container" action="/api/validate" method="POST">
-                <input hidden id="courseInfo" name="courseInfo" value="<%= JSON.stringify(value[value.length - 1]) %>">
-                <button class="btn btn-primary" id="validate-btn">
-                    Validate
-                </button>
-            </form>
-            <button type="button" class="collapsible"><%= key %></button>
-            <div class="content">
-                <div class="table-responsive">
-                    <table class="table">
-                        <thead>
-                            <tr>
-                                <th># Participants</th>
-                                <th># Participants Passed</th>
-                                <!-- <th>Grades Asset URL</th> -->
-                                <!-- <th>Grades Asset Hash</th> -->
-                                <th>Status</th>
-                                <th>Notes</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <% value.forEach((course, i) => { %>
+            <div style="margin-top: 1rem;">
+                <form class="validate-btn-container" action="/api/validate" method="POST">
+                    <input hidden id="courseInfo" name="courseInfo" value="<%= JSON.stringify(value[value.length - 1]) %>">
+                    <button class="btn btn-primary" id="validate-btn">
+                        Validate
+                    </button>
+                </form>
+                <button type="button" class="collapsible"><%= key %></button>
+                <div class="content">
+                    <div class="table-responsive">
+                        <table class="table">
+                            <thead>
                                 <tr>
-                                    <td><%= course.participants_number %></td>
-                                    <td><%= course.pass_number %></td>
-                                    <!-- <td><%= course.grades_asset_url %></td> -->
-                                    <!-- <td><%= course.grades_asset_hash %></td> -->
-                                    <td><%= course.update_status %></td>
-                                    <td><%= course.notes %></td>
+                                    <th># Participants</th>
+                                    <th># Participants Passed</th>
+                                    <th>Professor</th>
+                                    <!-- <th>Grades Asset URL</th> -->
+                                    <!-- <th>Grades Asset Hash</th> -->
+                                    <th>Status</th>
+                                    <th>Notes</th>
                                 </tr>
-                            <% }) %>
-                        </tbody>
-                    </table>
+                            </thead>
+                            <tbody>
+                                <% value.forEach((course, i) => { %>
+                                    <tr>
+                                        <td><%= course.participants_number %></td>
+                                        <td><%= course.pass_number %></td>
+                                        <td><%= course.professor %></td>
+                                        <!-- <td><%= course.grades_asset_url %></td> -->
+                                        <!-- <td><%= course.grades_asset_hash %></td> -->
+                                        <td><%= course.update_status %></td>
+                                        <td><%= course.notes %></td>
+                                    </tr>
+                                <% }) %>
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
             </div>
         <% } %>
