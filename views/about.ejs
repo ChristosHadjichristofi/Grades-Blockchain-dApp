@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
+    <title> <%= pageTitle %> </title>
+    <link rel="stylesheet" href="/assets/bootstrap/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/assets/css/styles.css">
+</head>
+
+<body id="body">
+    
+    <%- include("includes/navbar.ejs")%>
+
+    <div class="col d-flex justify-content-center">
+        <div class="row" style="margin-top: 2.5rem">
+            <div class={`${styles.animated} ${styles.fadeIn}`}>
+                <div class="profile-card">
+                    <div class="card-body">
+                        <div class="center avatar">
+                            <img
+                                src="https://eu.ui-avatars.com/api/CH"
+                                class="profile-card-img-top"
+                                alt=""
+                            />
+                            <h5 class="profile=card-title">
+                                Christos Hadjichristofi
+                            </h5>
+                        </div>
+                        <hr />
+                        <h6>Project Information</h6>
+                        <p class="profile-card-text center">
+                            Should add info about the project (or a ref to it)
+                            <br />
+                        </p>
+                        <h6>About me</h6>
+                        <p class="center profile-card-text">
+                            More information about me can be found in <a href='https://christoshadjichristofi.github.io/'>here</a>
+                            <br />
+                        </p>
+                        <h6>Find me on</h6>
+                        <div class="center social-basic">
+                            <ul class="list-inline">
+                                <li class="list-inline-item">
+                                    <a href="https://www.linkedin.com/in/ChristosHadjichristofi/">
+                                        <i class="fab fa-linkedin"></i>&nbsp;LinkedIn</a>
+                                </li>
+                                <li class="list-inline-item">
+                                    <a href="https://github.com/ChristosHadjichristofi">
+                                        <i class="fab fa-github"></i>&nbsp;GitHub</a>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <%- include("includes/footer.ejs")%>
+    
+</body>
+</html>

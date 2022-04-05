@@ -257,3 +257,9 @@ exports.getShowVoteList = (req, res, next) => {
         res.redirect('/');
     })
 }
+
+exports.getAboutPage = (req, res, next) => {
+    res.render('about.ejs', {
+        pageTitle: "About Page"
+    });
+}

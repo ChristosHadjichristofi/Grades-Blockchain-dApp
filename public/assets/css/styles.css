@@ -42,7 +42,8 @@
   max-width: 650px;
 }
 
-#storeGrades, #storeNodePermissions {
+#storeGrades,
+#storeNodePermissions {
   margin-top: 8px;
   padding: 10px;
   border-radius: 8px;
@@ -64,13 +65,14 @@
   padding: 18px;
   width: 100%;
   border: none;
-  text-align: center; 
+  text-align: center;
   outline: none;
   font-size: 15px;
 }
 
 /* Add a background color to the button if it is clicked on (add the .active class with JS), and when you move the mouse over it (hover) */
-.active, .collapsible:hover {
+.active,
+.collapsible:hover {
   background-color: rgba(107, 141, 228, 0.42);
 }
 
@@ -83,7 +85,7 @@
 }
 
 .collapsible:after {
-  content: '\02795'; /* Unicode character for "plus" sign (+) */
+  content: "\02795"; /* Unicode character for "plus" sign (+) */
   font-size: 10px;
   color: white;
   float: right;
@@ -144,7 +146,7 @@
   padding-bottom: 25px;
 }
 
-.footer-basic .social>a {
+.footer-basic .social > a {
   font-size: 24px;
   width: 40px;
   height: 40px;
@@ -158,7 +160,7 @@
   opacity: 0.75;
 }
 
-.footer-basic .social>a:hover {
+.footer-basic .social > a:hover {
   opacity: 0.9;
 }
 
@@ -221,7 +223,8 @@
   fill: none;
 }
 
-.st10 {}
+.st10 {
+}
 
 #cloud1 {
   animation: cloud003 15s linear infinite;
@@ -257,13 +260,13 @@
 
 @keyframes jig {
   0% {
-      transform: translateY(0px);
+    transform: translateY(0px);
   }
   50% {
-      transform: translateY(1px);
+    transform: translateY(1px);
   }
   100% {
-      transform: translateY(0px);
+    transform: translateY(0px);
   }
 }
 
@@ -273,22 +276,21 @@
 
 @keyframes land {
   from {
-      transform: translateX(0);
+    transform: translateX(0);
   }
   to {
-      transform: translateX(1000px);
+    transform: translateX(1000px);
   }
 }
 
 @keyframes slide {
   from {
-      transform: translateX(0px);
+    transform: translateX(0px);
   }
   to {
-      transform: translateX(100px);
+    transform: translateX(100px);
   }
 }
-
 
 /* @keyframes cloudFloat {
 0% { transform: translateX(0) translateY(3px); }
@@ -297,40 +299,40 @@
 
 @keyframes cloud001 {
   0% {
-      transform: translateX(-1000px) translateY(3px);
+    transform: translateX(-1000px) translateY(3px);
   }
   100% {
-      transform: translateX(1000px) translateY(0);
+    transform: translateX(1000px) translateY(0);
   }
 }
 
 @keyframes cloud002 {
   0% {
-      transform: translateX(-1000px) translateY(3px);
+    transform: translateX(-1000px) translateY(3px);
   }
   100% {
-      transform: translateX(1000px) translateY(0);
+    transform: translateX(1000px) translateY(0);
   }
 }
 
 @keyframes cloud003 {
   0% {
-      transform: translateX(-1000px) translateY(3px);
+    transform: translateX(-1000px) translateY(3px);
   }
   100% {
-      transform: translateX(1000px) translateY(0);
+    transform: translateX(1000px) translateY(0);
   }
 }
 
 @keyframes float {
   0% {
-      transform: translateY(0px) translateX(0);
+    transform: translateY(0px) translateX(0);
   }
   50% {
-      transform: translateY(8px) translateX(5px);
+    transform: translateY(8px) translateX(5px);
   }
   100% {
-      transform: translateY(0px) translateX(0);
+    transform: translateY(0px) translateX(0);
   }
 }
 
@@ -341,18 +343,82 @@
 
 @keyframes braces {
   0% {
-      transform: translateX(-2px);
+    transform: translateX(-2px);
   }
   25% {
-      transform: translateX(3px);
+    transform: translateX(3px);
   }
   50% {
-      transform: translateX(-2px);
+    transform: translateX(-2px);
   }
   75% {
-      transform: translateX(3px);
+    transform: translateX(3px);
   }
   100% {
-      transform: translateX(-2px);
+    transform: translateX(-2px);
   }
+}
+
+/* profile card */
+.profile-card {
+  padding: 30px;
+  border: solid 1px rgba(0, 0, 0, 0.08);
+  cursor: pointer;
+}
+.profile-card:hover {
+  box-shadow: 0 0 12px 3px rgba(0, 0, 0, 0.08);
+}
+.profile-card-title {
+  margin-top: 20px;
+}
+
+.profile-card-img-top {
+  max-width: 50px;
+  max-height: 50px;
+}
+
+.profile-card-text {
+  font-size: 14px;
+  color: rgba(0, 0, 0, 0.6);
+}
+.profile-card-text .fa {
+  font-size: 26px;
+}
+.avatar {
+  width: 140px;
+  margin: auto;
+}
+.avatar img {
+  border: solid 6px transparent;
+  border-radius: 50%;
+}
+.profile-card:hover .avatar img {
+  border-color: rgb(99, 204, 131);
+}
+
+.center {
+  text-align: center;
+}
+
+.social-basic ul {
+  padding: 0;
+  list-style: none;
+  text-align: center;
+  font-size: 18px;
+  line-height: 1.6;
+  margin-bottom: 0;
+}
+
+.social-basic li {
+  padding: 0 10px;
+}
+
+.social-basic ul a {
+  color: inherit;
+  text-decoration: none;
+  opacity: 0.8;
+}
+
+.social-basic ul a:hover {
+  opacity: 1;
 }
