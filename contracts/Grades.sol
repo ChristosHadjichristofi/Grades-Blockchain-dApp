@@ -5,8 +5,6 @@ contract Grades {
 
     /* permissions variables, vote system and structs */
 
-    // master node (should be the address that deployes the contract)
-    address masterNode = 0xd173b52741866b40587489D843E0Cc977F965410;
     // permissions of nodes
     struct NodePermissions {
         bool hasAccess;
@@ -58,6 +56,7 @@ contract Grades {
     /* end of course grades */
 
     constructor() {
+        address masterNode = msg.sender;
         keysOfNodes.push(masterNode);
         nodes[masterNode].hasAccess = true;
         nodes[masterNode].isMaster = true;
@@ -118,7 +117,7 @@ contract Grades {
     }
 
     function addNetworkNode(address node, string memory school, bool isMaster) public {
-        require(msg.sender == masterNode, "Only a master node can add a node to network.");
+        require(nodes[msg.sender].isMaster, "Only a master node can add a node to network.");
         require(votes[node].ongoing == false, "There is already a vote ongoing for this node.");
         require(nodes[node].hasAccess == false, "The node is already in the network.");        
         // for voting
@@ -153,7 +152,8 @@ contract Grades {
             nodesApplied--;
             
             for (uint i = 0; i < keysOfNodes.length; i++)
-                votes[node].voted[keysOfNodes[i]] = false;
+                if (keysOfNodes[i] != node)
+                    votes[node].voted[keysOfNodes[i]] = false;
 
             delete iterateVotes[votes[node].index];
             delete votes[node];
