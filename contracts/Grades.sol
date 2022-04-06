@@ -123,7 +123,8 @@ contract Grades {
         // for voting
         votes[node].ongoing = true;
         votes[node].index = nodesApplied;
-        iterateVotes[nodesApplied++] = node;
+        iterateVotes[nodesApplied] = node;
+        nodesApplied++;
         // node's info, now the node has no access. All the other nodes must vote
         nodes[node].hasAccess = false;
         nodes[node].isMaster = isMaster;
@@ -149,13 +150,19 @@ contract Grades {
                 nodesNumber++;
             }
 
+            uint start = votes[node].index + 1;
+            for (uint i = start; i < nodesApplied; i++) {
+                iterateVotes[i - 1] = iterateVotes[i];
+                votes[iterateVotes[i - 1]].index--;
+            }
+
             nodesApplied--;
+            votes[node].ongoing = false;
             
             for (uint i = 0; i < keysOfNodes.length; i++)
                 if (keysOfNodes[i] != node)
                     votes[node].voted[keysOfNodes[i]] = false;
 
-            delete iterateVotes[votes[node].index];
             delete votes[node];
         }
     }
@@ -166,7 +173,7 @@ contract Grades {
         // determine result length
         uint resultLength = 0;
         for (uint i = 0; i < nodesApplied; i++)
-            if (votes[iterateVotes[i]].voted[msg.sender] == false) resultLength++;
+            if (votes[iterateVotes[i]].voted[msg.sender] == false && votes[iterateVotes[i]].ongoing) resultLength++;
 
         // create array of structs with length eq to resultLength
         VoteList[] memory result = new VoteList[](resultLength);
