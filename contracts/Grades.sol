@@ -156,6 +156,7 @@ contract Grades {
                 votes[iterateVotes[i - 1]].index--;
             }
 
+            delete iterateVotes[nodesApplied - 1];
             nodesApplied--;
             votes[node].ongoing = false;
             
