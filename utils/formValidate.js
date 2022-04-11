@@ -10,7 +10,7 @@ exports.gradesInfo = (formObject, mandatory) => {
     else return { error: true, msg: "Mandatory Fields (" + fieldsMissing.reduce((text, value, i, array) => text + (i < array.length - 1 ? ', ' : ' and ') + value) + ") are missing!" };
 }
 
-exports.nodePermissions = (wallet, school, isMaster) => {
+exports.userPermissions = (wallet, school, isMaster) => {
     fieldsMissing = [];
 
     if (!wallet) fieldsMissing.push("Wallet");

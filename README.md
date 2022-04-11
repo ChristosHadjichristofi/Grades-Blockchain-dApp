@@ -10,13 +10,13 @@ A dApp that manages Grades of a University through a private Ethereum network. B
 
 ## General Idea
 * The nodes of the private blockchain network are the secretaries of the university schools
-* A master node can retrieve all participants
-* A master node can start a vote to add a new participant in the network
+* A master user can retrieve all participants
+* A master user can start a vote to add a new participant in the network. Several users can be voted to participate and have access to the blockchain's data. Many users can belong to a School
 * When a vote has began for a specific wallet to be added as a participant, all the participants can vote for or against. There must be unanimity so as this wallet is added as a participant
 * Multiple votes can be started together
 * Grades information are saved based on the school and period of the exam. A corrective state can be added to the grades information (of a school's course at a specific exam period). The information can be retrieved and the full history can be shown (if more information are saved regarding a school's course at a specific exam period). Always the latest record of a school's course at a specific exam period is the current, and all the previous are the history
 * At any time a user can check if the file's content that is uploaded to a server matches the content of the file that was saved in the blockchain. Unified diff string output produced and shown (if differences are found)
-* Participants can retrieve a school's course grade info (this will show all the records grouped by exam period). Participants who are not master nodes can only retrieve the information that their wallet is bound to (for example if a wallet is bound to school A, then this wallet can only retrieve courses information of that school)
+* Participants can retrieve a school's course grade info (this will show all the records grouped by exam period). Participants who are not master users can only retrieve the information that their wallet is bound to (for example if a wallet is bound to school A, then this wallet can only retrieve courses information of that school)
 
 ## Functions of Smart Contract
 * addRecord: To add grades information of a school's course at a specific exam period

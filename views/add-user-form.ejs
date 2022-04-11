@@ -15,11 +15,11 @@
     <%- include("includes/navbar.ejs")%>
 
     <div class="container" id="container-form">
-        <div class="card">
+        <div class="card shadow">
             <div class="card-body">
                 <h6 class="text-muted card-subtitle mb-2">Complete the following form</h6>
-                <form method="POST" action="/api/add/node/permissions">
-                    <label for="wallet">Node Wallet</label>
+                <form method="POST" action="/api/add/user/permissions">
+                    <label for="wallet">User's Wallet</label>
                     <input class="form-control" type="text" name="wallet" id="wallet"/>
 
                     <label for="schools">School</label>
@@ -35,14 +35,14 @@
                         <option value="SCHOOL OF APPLIED MATHEMATICAL & PHYSICAL SCIENCES">SCHOOL OF APPLIED MATHEMATICAL & PHYSICAL SCIENCES</option>
                     </select>
                     
-                    <label for="master">Master Node</label>
+                    <label for="master">Master User</label>
                     <select class="form-control" id="master" name="master">
                         <option value="No">No</option>
                         <option value="Yes">Yes</option>
                     </select>
 
                     <div id="btn-container">
-                        <button class="btn btn-primary" id="storeNodePermissions" type="submit">Save</button>
+                        <button class="btn btn-primary shadow" id="storeUserPermissions" type="submit">Save</button>
                     </div>
                 </form>
             </div>

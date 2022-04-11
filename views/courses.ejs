@@ -31,7 +31,7 @@
             <div class="container">
                 <div class="row" id="row">
                     <div class="col-md-12">
-                        <div class="card" id="card-container">
+                        <div class="card shadow" id="card-container">
                             <div class="card-body" id="card">
                                 <h2> <%= school %> </h2>
                                 <div class="table-responsive">
@@ -49,7 +49,7 @@
                                                     <td><%= course.code %></td>
                                                     <td><%= course.name %></td>
                                                     <form method="GET" action="<%= school.split(' ').join('-') %>/course/<%= course.code %>">
-                                                        <td style="width: 15%;"> <button class="btn btn-primary">More</button> </td>
+                                                        <td style="width: 15%;"> <button class="btn btn-primary shadow">More</button> </td>
                                                     </form>
                                                 </tr>
                                             <% } %>

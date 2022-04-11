@@ -20,11 +20,11 @@
             <div style="margin-top: 1rem;">
                 <form class="validate-btn-container" action="/api/validate" method="POST">
                     <input hidden id="courseInfo" name="courseInfo" value="<%= JSON.stringify(value[value.length - 1]) %>">
-                    <button class="btn btn-primary" id="validate-btn">
+                    <button class="btn btn-primary shadow" id="validate-btn">
                         Validate
                     </button>
                 </form>
-                <button type="button" class="collapsible"><%= key %></button>
+                <button type="button" class="collapsible shadow"><%= key %></button>
                 <div class="content">
                     <div class="table-responsive">
                         <table class="table">

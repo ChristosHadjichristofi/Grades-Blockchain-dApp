@@ -81,16 +81,16 @@ exports.postStoreForm = (req, res, next) => {
     })
 }
 
-exports.postNodePermissions = (req, res, next) => {
+exports.postUserPermissions = (req, res, next) => {
 
     const wallet = req.body.wallet;
     const school = req.body.school;
     const isMaster = (req.body.master == 'Yes') ? true : false;
 
-    validationObj = formValidate.nodePermissions(wallet, school, isMaster);
+    validationObj = formValidate.userPermissions(wallet, school, isMaster);
     if(validationObj.error) {
         req.flash('messages', { type: 'error', value: validationObj.msg })
-        return res.redirect('/add/node/form');
+        return res.redirect('/add/user/form');
     }
 
     web3Object.contracts.grades.deployed()
@@ -99,11 +99,11 @@ exports.postNodePermissions = (req, res, next) => {
     })
     .then(result => {
         req.flash('messages', { type: 'success', value: 'User with Wallet: ' + wallet + " was added successfully to the vote list." })
-        res.redirect('/add/node/form');
+        res.redirect('/add/user/form');
     })
     .catch(err => {
         req.flash('messages', { type: 'error', value: err.toString() })
-        res.redirect('/add/node/form');
+        res.redirect('/add/user/form');
     })
 }
 

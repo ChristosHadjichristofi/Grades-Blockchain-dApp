@@ -24,6 +24,15 @@
   max-width: 280px;
   margin: auto;
   background-color: rgba(107, 141, 228, 0.23);
+  box-shadow: rgba(0, 0, 0, 0.16) 0px 3px 6px, rgba(0, 0, 0, 0.23) 0px 3px 6px;
+}
+
+.shadow {
+  box-shadow: rgba(0, 0, 0, 0.16) 0px 3px 6px, rgba(0, 0, 0, 0.23) 0px 3px 6px;
+}
+
+#card-container-layout:hover {
+  box-shadow: rgba(0, 0, 0, 0.42) 0px 12px 24px 3px;
 }
 
 #card-container {
@@ -43,7 +52,7 @@
 }
 
 #storeGrades,
-#storeNodePermissions {
+#storeUserPermissions {
   margin-top: 8px;
   padding: 10px;
   border-radius: 8px;

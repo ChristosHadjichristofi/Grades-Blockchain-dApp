@@ -100,12 +100,12 @@ exports.getForm = (req, res, next) => {
     })
 }
 
-exports.getAddNodeForm = (req, res, next) => {
+exports.getAddUserForm = (req, res, next) => {
     let messages = req.flash("messages");
     if (messages.length == 0) messages = [];
 
-    res.render('add-node-form.ejs', {
-        pageTitle: "Add Node Page",
+    res.render('add-user-form.ejs', {
+        pageTitle: "Add User Page",
         messages: messages
     });
 }
