@@ -244,7 +244,7 @@ exports.getShowVoteList = (req, res, next) => {
     })
     .then(voteListRetrieved => {
         for (const l of voteListRetrieved) {
-            voteList.push({ address: l.node, yes: l.yes, no: l.no });
+            voteList.push({ address: l.user, yes: l.yes, no: l.no });
         }
         res.render('vote-list.ejs', {
             pageTitle: "Vote List Page",

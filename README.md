@@ -9,7 +9,7 @@ A dApp that manages Grades of a University through a private Ethereum network. B
 * Solidity (for the smart contract)
 
 ## General Idea
-* The nodes of the private blockchain network are the secretaries of the university schools
+* The users of the private blockchain network are the secretaries of the university schools
 * A master user can retrieve all participants
 * A master user can start a vote to add a new participant in the network. Several users can be voted to participate and have access to the blockchain's data. Many users can belong to a School
 * When a vote has began for a specific wallet to be added as a participant, all the participants can vote for or against. There must be unanimity so as this wallet is added as a participant
@@ -21,9 +21,9 @@ A dApp that manages Grades of a University through a private Ethereum network. B
 ## Functions of Smart Contract
 * addRecord: To add grades information of a school's course at a specific exam period
 * retrieveCourseGrades: Retrieve the grades information of a specific course
-* retrieveNodePermissions: Retrieves wallet's permissions (hasAccess, isMaster)
+* retrieveUserPermissions: Retrieves wallet's permissions (hasAccess, isMaster)
 * retrieveParticipants: Retrieve all participants and their permissions
-* addNetworkNode: Starts a vote so as a new wallet can participate in the network and interract with the contracts
+* addNetworkUser: Starts a vote so as a new wallet can participate in the network and interract with the contracts
 * voteAdd: Vote for or against a candidate
 * voteList: Retrieve all ongoing votes that you didn't vote
 

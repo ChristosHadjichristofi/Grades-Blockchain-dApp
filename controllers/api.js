@@ -95,7 +95,7 @@ exports.postUserPermissions = (req, res, next) => {
 
     web3Object.contracts.grades.deployed()
     .then(smartContractObj => {
-        return smartContractObj.addNetworkNode.sendTransaction(wallet, school, isMaster, { from: web3Object.account });
+        return smartContractObj.addNetworkUser.sendTransaction(wallet, school, isMaster, { from: web3Object.account });
     })
     .then(result => {
         req.flash('messages', { type: 'success', value: 'User with Wallet: ' + wallet + " was added successfully to the vote list." })
