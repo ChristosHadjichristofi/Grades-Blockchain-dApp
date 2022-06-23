@@ -76,3 +76,10 @@ DB_PORT=[DB Port]
 Implementation of a private permissioned blockchain for University grades management
 * Dipl thesis by Cristos Hadjichristofi (christoshadjichristofi@hotmail.com)
 * Supervisors: Prof.Vassilios Vescoukis, Mr.Ioannis Tzannetos, PhD Cand
+
+### Abstract
+A Blockchain is a distributed and decentralized immutable public ledger, that exists across a network. The Blockchain acts as a distributed database that is shared among the nodes of a network. More specifically, it stores information in digital format that can not be edited. Thus, it guarantees the integrity and security of any record of data and therefore, is capable of working without the need of a trusted third party. It is a well-known technology which bloomed over the past years, due to its capability to maintain transactions securely.
+
+This diploma thesis aims to the development of a private Blockchain network with the respective smart contracts and front-end to manage University grades. The problem that this thesis solves, will be addressed and a complete solution will be discussed, among with concepts and basic principles like Blockchain, smart contracts, consensus algorithms but also with the difficulties that were encountered during the implementation of this system.
+
+Finally, it is concluded that a system of such capability can be developed, deployed, exist and co-operate with any other legacy system and offer all the perks of Blockchain technology. In addition, ideas for further expansions of the examined system are discussed, along with the benefits that they may offer.
