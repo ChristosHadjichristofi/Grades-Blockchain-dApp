@@ -74,7 +74,7 @@ DB_PORT=[DB Port]
 
 ## Thesis Information
 Implementation of a private permissioned blockchain for University grades management
-* Dipl thesis by Cristos Hadjichristofi (christoshadjichristofi@hotmail.com)
+* Dipl thesis by Christos Hadjichristofi (christoshadjichristofi@hotmail.com)
 * Supervisors: Prof.Vassilios Vescoukis, Mr.Ioannis Tzannetos, PhD Cand
 
 ### Abstract
