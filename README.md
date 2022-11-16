@@ -1,5 +1,13 @@
 # Grades-Blockchain-dApp
-A dApp that manages Grades of a University through a private Ethereum network. Because this dApp was initially created with the technologies I was familiar with, it reads the wallet from a .env file. After finishing this implementation, the project was also created with NextJS so as it is more product like (Uses MetaMask to connect to a wallet and then interract with the smart contracts with that wallet)
+
+<p align="center">
+  <b>A dApp that manages Grades of a University through a private Ethereum network. Because this dApp was initially created with the technologies I was familiar with, it reads the wallet from a .env file. After finishing this implementation, the project was also created with NextJS so as it is more product like (Uses MetaMask to connect to a wallet and then interract with the smart contracts with that wallet).</b> </br>
+  <img alt="Byte Code Size" src="https://img.shields.io/github/languages/code-size/ChristosHadjichristofi/Grades-Blockchain-dApp?color=red" />
+	<img alt="# Lines of Code" src="https://img.shields.io/tokei/lines/github/ChristosHadjichristofi/Grades-Blockchain-dApp?color=red" />
+	<img alt="# Languages Used" src="https://img.shields.io/github/languages/count/ChristosHadjichristofi/Grades-Blockchain-dApp?color=yellow" />
+	<img alt="Top language" src="https://img.shields.io/github/languages/top/ChristosHadjichristofi/Grades-Blockchain-dApp?color=yellow" />
+	<img alt="Last commit" src="https://img.shields.io/github/last-commit/ChristosHadjichristofi/Grades-Blockchain-dApp?color=important" />
+</p>
 
 ## Technologies Used
 * NodeJS
